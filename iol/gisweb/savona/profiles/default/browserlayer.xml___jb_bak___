@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<layers>
-  <layer name="iol.gisweb.savona"
-    interface="iol.gisweb.savona.interfaces.IIolAppsLayer" />
-</layers>
