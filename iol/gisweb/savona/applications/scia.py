@@ -2,12 +2,9 @@ from zope.interface import implements
 from iol.gisweb.spezia.interfaces import IIolApp
 from zope import component
 from AccessControl import ClassSecurityInfo
-from plone import api
 
-from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL_REMOVE_PERMISSION
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
-from Products.CMFCore.utils import getToolByName
 
 
 
@@ -31,4 +28,8 @@ class sciaApp(object):
             nuovoNumero = (brains[0].getObject().getItem(IOL_NUM_FIELD,0) or 0) +1
 
         return nuovoNumero
+
+    security.declarePublic('InvioPraticaweb')
+    def invioPraticaweb(self,obj):
+
 

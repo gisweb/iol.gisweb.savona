@@ -19,5 +19,6 @@ iol/gisweb/savona/setuphandlers.py
 iol/gisweb/savona/tests.py
 iol/gisweb/savona/applications/__init__.py
 iol/gisweb/savona/applications/default.py
+iol/gisweb/savona/applications/scia.py
 iol/gisweb/savona/browser/__init__.py
 iol/gisweb/savona/browser/views.py
