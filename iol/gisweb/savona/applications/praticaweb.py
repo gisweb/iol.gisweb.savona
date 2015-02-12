@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import simple_json as json
+import simplejson as json
 import os
 
 def convert(conv,obj):

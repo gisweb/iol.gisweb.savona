@@ -31,5 +31,4 @@ class sciaApp(object):
 
     security.declarePublic('InvioPraticaweb')
     def invioPraticaweb(self,obj):
-
-
+        pass
