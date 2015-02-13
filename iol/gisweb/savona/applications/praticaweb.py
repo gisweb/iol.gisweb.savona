@@ -13,20 +13,27 @@ def convert(conv,obj):
     return res
 
 def getConvData(json_file):
-    fName = "mapping/%s.json" %json_file
-    if os.path.isfile(json_file):
-        json_data=open(json_file)
+    fName = "%s/mapping/%s.json" %(os.path.dirname(os.path.abspath(__file__)),json_file)
+
+    if os.path.isfile(fName):
+        json_data=open(fName)
         try:
             data = json.load(json_data)
         except ValueError, e:
-            data = dict()
-        json_data.close()
+            data = str(e)
+            json_data.close()
     else:
+        return fName
         data = dict()
     return data
 
-class table(object):
-    def __init__(self,json_file,**entries):
+
+class conf(object):
+    def __init__(self, entries):
+        self.__dict__.update(entries)
+
+class genericTable(object):
+    def __init__(self,json_file,entries):
         data = getConvData(json_file)
         if not isinstance(entries,dict):
             data = dict()

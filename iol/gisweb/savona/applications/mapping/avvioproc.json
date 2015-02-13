@@ -1,8 +1,9 @@
 {
-  "numero_pratica" : "numero",
+  "progressivo_pratica" : "numero",
   "numero_protocollo" : "protocollo",
   "data_protocollo" : "data_prot",
   "data_presentazione" : "data_presentazione",
-  "":""
+  "descrizione_intervento" : "oggetto",
+  "tipo" : "tipo"
 
 }

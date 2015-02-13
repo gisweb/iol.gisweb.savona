@@ -28,7 +28,7 @@ class IolApp(object):
         utils = getUtility(IIolApp,app)
         return utils.NuovoNumeroPratica(self.document)
 
-    security.declareProtected(IOL_EDIT_PERMISSION,'invioPraticaweb')
+    security.declarePublic('invioPraticaweb')
     def invioPraticaweb(self):
         app = self.document.getItem(config.APP_FIELD,config.APP_FIELD_DEFAULT_VALUE)
         utils = getUtility(IIolApp,app)

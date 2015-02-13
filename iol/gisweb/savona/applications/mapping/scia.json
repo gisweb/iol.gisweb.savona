@@ -1,0 +1,12 @@
+[
+    {
+    "conn_string" : "postgres://postgres:postgres@192.168.1.134:5433/gw_savona",
+    "schema" : "pe",
+    "table" : "avvioproc",
+    "field" : "",
+    "conversion_file" : "avvioproc",
+    "conversion_values" : [
+
+    ]
+  }
+]
