@@ -3,7 +3,7 @@ from zope.interface import implements
 from zope import component
 from AccessControl import ClassSecurityInfo
 from plone import api
-
+from iol.gisweb.savona.interfaces import IIolApp
 from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL_REMOVE_PERMISSION
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
