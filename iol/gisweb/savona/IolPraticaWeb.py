@@ -28,7 +28,7 @@ class IolWSPraticaWeb(object):
         self.client = Client(service)
 
     def _convertTipoPratica(self):
-        if 
+        pass 
 
     def aggiungi_pratica(self, pratica,soggetti=[],indirizzi=[],particelle_terreni=[],particelle_urbano=[],pareri=[],allegati=[]):
         client = self.client

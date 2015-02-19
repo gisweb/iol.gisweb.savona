@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from zope.interface import implements
-from iol.gisweb.spezia.interfaces import IIolApp
 from zope import component
 from AccessControl import ClassSecurityInfo
 from plone import api
