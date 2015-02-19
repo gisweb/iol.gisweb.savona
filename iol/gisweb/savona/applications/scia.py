@@ -1,5 +1,5 @@
 from zope.interface import implements
-from iol.gisweb.spezia.interfaces import IIolApp
+from iol.gisweb.savona.interfaces import IIolApp
 from zope import component
 from AccessControl import ClassSecurityInfo
 import simplejson as json
