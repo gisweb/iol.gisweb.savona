@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 from zope.interface import Interface, implements, Attribute
 from zope.component import adapts
 from plone import api
@@ -12,6 +11,8 @@ from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL
 from zope.component import getUtility
 from .interfaces import IIolPraticaWeb
 from suds.client import Client
+from DateTime import DateTime
+
 
 class IolWSPraticaWeb(object):
     implements(IIolPraticaWeb)
@@ -30,9 +31,18 @@ class IolWSPraticaWeb(object):
     def _convertTipoPratica(self):
         pass 
 
-    def aggiungi_pratica(self, pratica,soggetti=[],indirizzi=[],particelle_terreni=[],particelle_urbano=[],pareri=[],allegati=[]):
+    def aggiungi_pratica(self, pratica):
         client = self.client
-        pr = client.factory.create('pratica')
+        doc = self.document
+        pr = client.factory.create('procedimento')
+        if doc.getItem('data_inizio_lavori_opt','scia_data_inizio_presentazione'):
+            pr['tipo'] = 21100
+        else:
+            pr['tipo'] = 21200
+        pr['oggetto'] = doc.getItem('descrizione_intervento','')
+        pr['protocollo'] = doc.getItem('protocollo','')
+        pr['data_prot'] = doc.getItem('data_prot',DateTime()).strftime("%d/%m/%Y")
+        pr['data_presentazione'] = doc.getItem('data_presentazione',DateTime()).strftime("%d/%m/%Y")
 
-        sogg = client.factory.create('soggetto')
-        ind = client.factory.create('indirizzo')
+        #sogg = client.factory.create('soggetto')
+        #ind = client.factory.create('indirizzo')
