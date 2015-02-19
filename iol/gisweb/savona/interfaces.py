@@ -8,6 +8,11 @@ class IIolApp(Interface):
     iol_app = Attribute("Application Name")
 
 
+class IIolPraticaWeb(Interface):
+    """
+    Marker interface for iol praticaweb
+    """
+
 class IIolAppsLayer(Interface):
     """Marker interface for the Browserlayer
     """

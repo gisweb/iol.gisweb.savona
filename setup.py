@@ -24,6 +24,7 @@ setup(name='iol.gisweb.savona',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'suds',
           'plone.api',
           'Products.CMFPlomino',
           'iol.gisweb.utils'

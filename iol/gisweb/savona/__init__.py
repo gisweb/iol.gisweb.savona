@@ -8,6 +8,8 @@ from applications.scia import sciaApp
 
 
 allow_module("iol.gisweb.savona.IolApp")
+allow_module("iol.gisweb.savona.IolPraticaWeb")
+
 MessageFactory = MessageFactory('iol.gisweb.savona')
 
 gsm = component.getGlobalSiteManager()
