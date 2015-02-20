@@ -1,4 +1,14 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    i18n_domain="iol.gisweb.savona"/>
+    i18n_domain="iol.gisweb.savona">
+
+     <browser:page
+       name="inviaPraticaweb"
+       for="Products.CMFPlomino.interfaces.IPlominoDocument"
+       layer="..interfaces.IIolAppsLayer"
+       class=".views.inviaPW"
+       permission="zope2.View"
+     />
+
+</configure>

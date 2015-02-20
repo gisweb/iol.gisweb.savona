@@ -31,7 +31,7 @@ class IolWSPraticaWeb(object):
     def _convertTipoPratica(self):
         pass 
 
-    def aggiungi_pratica(self, pratica):
+    def aggiungi_pratica(self):
         client = self.client
         doc = self.document
         pr = client.factory.create('procedimento')
@@ -43,6 +43,10 @@ class IolWSPraticaWeb(object):
         pr['protocollo'] = doc.getItem('protocollo','')
         pr['data_prot'] = doc.getItem('data_prot',DateTime()).strftime("%d/%m/%Y")
         pr['data_presentazione'] = doc.getItem('data_presentazione',DateTime()).strftime("%d/%m/%Y")
-
+        pr['online'] = 1
+        pr['resp_proc'] = 24
+        pr['data_resp'] = DateTime().strftime("%d/%m/%Y")
+        res = client.service.aggiungiPratica(pr)
+        return res
         #sogg = client.factory.create('soggetto')
         #ind = client.factory.create('indirizzo')
