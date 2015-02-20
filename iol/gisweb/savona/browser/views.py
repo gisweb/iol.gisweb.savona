@@ -18,6 +18,8 @@ class inviaPW(object):
         url = "http://webservice.gisweb.it/wspraticaweb/savona.wsPraticaweb.php?wsdl&test=%d" %random.randint(1,100000)
         wsDoc = IolWSPraticaWeb(doc,url)
         res = wsDoc.aggiungi_pratica()
-        doc.REQUEST.RESPONSE.redirect("%s/content_status_modify?workflow_action=protocolla" %doc.absolute_url())
+        wftool = getToolByName(doc,'portal_workflow')
+        wftool.doActionFor(doc,'protocolla')
+        doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
         #doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
         return res
