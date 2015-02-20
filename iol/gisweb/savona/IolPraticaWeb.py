@@ -62,7 +62,7 @@ class IolWSPraticaWeb(object):
             el.sezione = i[1]
             el.mappale = i[2]
 
-            client.service.aggiungiCatastoTerreni(pratica,el)
+            res = client.service.aggiungiCatastoTerreni(pratica,el)
 
         cu = doc.getItem('elenco_nceu',[])
         for i in cu:
