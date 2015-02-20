@@ -40,13 +40,21 @@ class IolWSPraticaWeb(object):
         else:
             pr['tipo'] = 21200
         pr['oggetto'] = doc.getItem('descrizione_intervento','')
-        pr['protocollo'] = doc.getItem('protocollo','')
+        pr['protocollo'] = doc.getItem('numero_protocollo','')
         pr['data_prot'] = doc.getItem('data_prot',DateTime()).strftime("%d/%m/%Y")
         pr['data_presentazione'] = doc.getItem('data_presentazione',DateTime().strftime("%d/%m/%Y"))
         pr['online'] = 1
         pr['resp_proc'] = 24
         pr['data_resp'] = DateTime().strftime("%d/%m/%Y")
         res = client.service.aggiungiPratica(pr)
+        pratica=res['pratica']
+        indirizzi = doc,getItem('indirizzi',[])
+        for i in indirizzi:
+            ind = client.factory.create('indirizzo')
+            ind.via = i[0]
+            ind.civico = i[1]
+            ind.interno = i[2]
+            client.service.aggiungiIndirizzo(pratica,ind)
         return res
         #sogg = client.factory.create('soggetto')
-        #ind = client.factory.create('indirizzo')
+        #
