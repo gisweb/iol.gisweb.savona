@@ -23,8 +23,8 @@ class IolWSPraticaWeb(object):
     def __init__(self,obj,service):
         self.document = obj
         self.service = service
-        if not service.endswith('?wsdl'):
-            service = "%s?wsdl" %service
+        #if not service.endswith('?wsdl'):
+        #    service = "%s?wsdl" %service
 
         self.client = Client(service)
 
