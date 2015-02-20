@@ -15,5 +15,7 @@ class inviaPW(object):
 
     def __call__(self):
         doc = self.aq_parent
+        url = "http://webservice.gisweb.it/wspraticaweb/savona.wsPraticaweb.php?wsdl&test=4"
         wsDoc = IolWSPraticaWeb(doc)
-        wsDoc.aggiungi_pratica()
+        res = wsDoc.aggiungi_pratica()
+        return res
