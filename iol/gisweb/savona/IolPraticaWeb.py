@@ -74,7 +74,8 @@ class IolWSPraticaWeb(object):
             el.mappale = i[2]
             el.sub = i[3]
             r = client.service.aggiungiCatastoUrbano(pratica,el)
-            message.append("Errori nell'inserimento dei dati del catasto urbano")
+            if r['success'] == -1:
+                message.append("Errori nell'inserimento dei dati del catasto urbano")
 
         return dict(success = res['success'],numero=res['numero_pratica'], messages = message)
         #sogg = client.factory.create('soggetto')
