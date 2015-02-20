@@ -55,6 +55,23 @@ class IolWSPraticaWeb(object):
             ind.civico = i[1]
             ind.interno = i[2]
             client.service.aggiungiIndirizzo(pratica,ind)
+
+        ct = doc.getItem('elenco_nct',[])
+        for i in ct:
+            el = client.factory.create('particella')
+            el.sezione = i[1]
+            el.mappale = i[2]
+
+            client.service.aggiungiCatastoTerreni(pratica,el)
+
+        cu = doc.getItem('elenco_nceu',[])
+        for i in cu:
+            el = client.factory.create('particella')
+            el.sezione = i[1]
+            el.mappale = i[2]
+            el.sub = i[3]
+            client.service.aggiungiCatastoUrbano(pratica,el)
+
         return res
         #sogg = client.factory.create('soggetto')
         #
