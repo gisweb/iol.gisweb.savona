@@ -60,7 +60,7 @@ class IolWSPraticaWeb(object):
         ct = doc.getItem('elenco_nct',[])
         for i in ct:
             el = client.factory.create('particella')
-            el.sezione = i[1]
+            el.foglio = i[1]
             el.mappale = i[2]
 
             r = client.service.aggiungiCatastoTerreni(pratica,el)
@@ -70,7 +70,7 @@ class IolWSPraticaWeb(object):
         cu = doc.getItem('elenco_nceu',[])
         for i in cu:
             el = client.factory.create('particella')
-            el.sezione = i[1]
+            el.foglio = i[1]
             el.mappale = i[2]
             el.sub = i[3]
             r = client.service.aggiungiCatastoUrbano(pratica,el)
