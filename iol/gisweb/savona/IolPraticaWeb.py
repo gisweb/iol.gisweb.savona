@@ -48,7 +48,7 @@ class IolWSPraticaWeb(object):
         pr['data_resp'] = DateTime().strftime("%d/%m/%Y")
         res = client.service.aggiungiPratica(pr)
         pratica=res['pratica']
-        indirizzi = doc,getItem('indirizzi',[])
+        indirizzi = doc.getItem('elenco_civici',[])
         for i in indirizzi:
             ind = client.factory.create('indirizzo')
             ind.via = i[0]
