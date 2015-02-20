@@ -47,7 +47,8 @@ class IolWSPraticaWeb(object):
         pr['resp_proc'] = 24
         pr['data_resp'] = DateTime().strftime("%d/%m/%Y")
         res = client.service.aggiungiPratica(pr)
-        pratica=res['pratica']
+        message = list()
+        pratica = res['pratica']
         indirizzi = doc.getItem('elenco_civici',[])
         for i in indirizzi:
             ind = client.factory.create('indirizzo')
@@ -62,7 +63,9 @@ class IolWSPraticaWeb(object):
             el.sezione = i[1]
             el.mappale = i[2]
 
-            res = client.service.aggiungiCatastoTerreni(pratica,el)
+            r = client.service.aggiungiCatastoTerreni(pratica,el)
+            if r['success'] == -1:
+                message.append("Errori nell'inserimento dei dati del catasto terreni")
 
         cu = doc.getItem('elenco_nceu',[])
         for i in cu:
@@ -70,8 +73,9 @@ class IolWSPraticaWeb(object):
             el.sezione = i[1]
             el.mappale = i[2]
             el.sub = i[3]
-            client.service.aggiungiCatastoUrbano(pratica,el)
+            r = client.service.aggiungiCatastoUrbano(pratica,el)
+            message.append("Errori nell'inserimento dei dati del catasto urbano")
 
-        return res
+        return dict(success = res['success'],numero=res['numero'], messages = message)
         #sogg = client.factory.create('soggetto')
         #
