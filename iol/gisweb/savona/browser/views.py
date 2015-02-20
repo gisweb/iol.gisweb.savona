@@ -19,7 +19,7 @@ class inviaPW(object):
         wsDoc = IolWSPraticaWeb(doc,url)
         res = wsDoc.aggiungi_pratica()
         wftool = getToolByName(doc,'portal_workflow')
-        wftool.doActionFor(doc,'protocolla')
+        wftool.doActionFor(doc,'i1_protocolla')
         doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
         #doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
         return res
