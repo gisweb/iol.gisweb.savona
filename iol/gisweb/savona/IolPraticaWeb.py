@@ -42,7 +42,7 @@ class IolWSPraticaWeb(object):
         pr['oggetto'] = doc.getItem('descrizione_intervento','')
         pr['protocollo'] = doc.getItem('protocollo','')
         pr['data_prot'] = doc.getItem('data_prot',DateTime()).strftime("%d/%m/%Y")
-        pr['data_presentazione'] = doc.getItem('data_presentazione',DateTime()).strftime("%d/%m/%Y")
+        pr['data_presentazione'] = doc.getItem('data_presentazione',DateTime().strftime("%d/%m/%Y"))
         pr['online'] = 1
         pr['resp_proc'] = 24
         pr['data_resp'] = DateTime().strftime("%d/%m/%Y")
