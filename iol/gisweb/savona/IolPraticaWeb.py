@@ -36,7 +36,6 @@ class IolWSPraticaWeb(object):
         client = self.client
         doc = self.document
 
-
         utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
         if not 'getProcedimento' in dir(utils):
             utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)

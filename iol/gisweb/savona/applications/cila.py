@@ -25,7 +25,7 @@ class cilaApp(object):
     security.declarePublic('NuovoNumeroPratica')
     def NuovoNumeroPratica(self,obj):
         idx = obj.getParentDatabase().getIndex()
-        query = dict(IOL_NUM_FIELD = dict(query=0, range='min'))
+        query = dict(IOL_NUM_FIELD = dict(query=0, range='min'), iol_tipo_app = 'cila')
 
         brains = idx.dbsearch(query, sortindex=IOL_NUM_FIELD, reverse=1, only_allowed=False)
         if not brains:

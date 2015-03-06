@@ -24,7 +24,7 @@ class sciaApp(object):
     security.declarePublic('NuovoNumeroPratica')
     def NuovoNumeroPratica(self,obj):
         idx = obj.getParentDatabase().getIndex()
-        query = dict(IOL_NUM_FIELD = dict(query=0, range='min'))
+        query = dict(IOL_NUM_FIELD = dict(query=0, range='min'),iol_tipo_app = 'scia' )
 
         brains = idx.dbsearch(query, sortindex=IOL_NUM_FIELD, reverse=1, only_allowed=False)
         if not brains:
@@ -63,17 +63,36 @@ class sciaWsClient(object):
         return pr
 
     def getSoggetti(self,obj):
+        doc = obj.document
+        idoc = IolDocument(doc)
         ftype = obj.client.factory.create('soggetto')
+        soggetti = list()
+        fields = [f.id for f in doc.getParentDatabase().getForm('sub_fisica_giuridica').getFormFields(includesubforms=True)]
+        rich = dict()
+        map = dict()
+        for f in fields:
+            rich[map[f]] = json.dumps(doc.getItem(id,None),default=DateTime.ISO,use_decimals=True)
+        rich['richiedente'] = 1
+        soggetti.append(rich)
+        for r in idoc.getDatagridValue('frm_scia_richiedenti','anagrafica_soggetti'):
+            rich = dict()
+            for k,v in i.items():
+                rich[map[k]] = v
+            rich['richiedente'] = 1
         return ftype
 
     def getIndirizzi(self,obj):
+        doc = obj.document
         ftype = obj.client.factory.create('indirizzo')
+
         return ftype
 
     def getCT(self,obj):
+        doc = obj.document
         ftype = obj.client.factory.create('particella')
         return ftype
 
     def getCU(self,obj):
+        doc = obj.document
         ftype = obj.client.factory.create('particella')
         return ftype
