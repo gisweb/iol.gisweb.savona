@@ -8,7 +8,7 @@ from Products.CMFPlomino.interfaces import IPlominoDocument, IPlominoForm
 from zope.component import getGlobalSiteManager
 from iol.gisweb.utils import config
 from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL_REMOVE_PERMISSION
-from zope.component import getUtility
+from zope.component import getUtility,queryUtility
 from .interfaces import IIolApp
 
 
@@ -25,7 +25,9 @@ class IolApp(object):
     security.declarePublic('NuovoNumeroPratica')
     def NuovoNumeroPratica(self):
         app = self.document.getItem(config.APP_FIELD,config.APP_FIELD_DEFAULT_VALUE)
-        utils = getUtility(IIolApp,app)
+        utils = queryUtility(IIolApp,name=app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'NuovoNumeroPratica' in dir(utils):
+            utils = getUtility(IIolApp,config.APP_FIELD_DEFAULT_VALUE)
         return utils.NuovoNumeroPratica(self.document)
 
     security.declarePublic('invioPraticaweb')
