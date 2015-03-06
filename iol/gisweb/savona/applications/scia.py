@@ -1,14 +1,14 @@
+# -*- coding: utf-8 -*-
 from zope.interface import implements
-from iol.gisweb.savona.interfaces import IIolApp
-from zope import component
+from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
+
 from AccessControl import ClassSecurityInfo
 import simplejson as json
-from plone import api
 
-import sqlalchemy as sql
-import sqlalchemy.orm as orm
+from DateTime import DateTime
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
+from iol.gisweb.utils.IolDocument import IolDocument
 
 from .praticaweb import getConvData,genericTable
 from plomino.replication.pgReplication import getPlominoValues
@@ -34,35 +34,46 @@ class sciaApp(object):
 
         return nuovoNumero
 
-    security.declarePublic('InvioPraticaweb')
-    def invioPraticaweb(self,obj):
-        plominoData = getPlominoValues(obj)
-        if plominoData['data_inizio_lavori_opt'] == 'scia_data_inizio_presentazione':
-            plominoData["tipo"] = 21100
-        else:
-            plominoData["tipo"] = 21200
 
-        data = getConvData('scia')
-        for d in data:
-            #cfg = conf(d)
-            cfg = d
-            try:
-                db = sql.create_engine(cfg['conn_string'])
-                metadata = sql.schema.MetaData(bind=db,reflect=True,schema=cfg['schema'])
-                table = sql.Table(cfg['table'], metadata, autoload=True)
-                orm.clear_mappers()
-                rowmapper = orm.mapper(genericTable,table)
-            except Exception as e:
-                api.portal.show_message(message=u'Si sono verificati errori nella connessione al database : %s' %str(e), request=obj.REQUEST )
-                return -1
-            #creating session
-            Sess = orm.sessionmaker(bind = db)
-            session = Sess()
-            row = genericTable(d['conversion_file'],plominoData)
-            session = Sess()
-            #adding row to database
-            session.add(row)
-            session.commit()
-            session.close()
-            db.dispose()
-        return 1
+
+
+class sciaWsClient(object):
+    implements(IIolPraticaWeb)
+    security = ClassSecurityInfo()
+    def __init__(self):
+        self.resp_proc = 24
+        pass
+
+    security.declarePublic('getProcedimento')
+    def getProcedimento(self,obj):
+        doc = obj.document
+        pr = obj.client.factory.create('procedimento')
+        if doc.getItem('data_inizio_lavori_opt','scia_data_inizio_presentazione')=='scia_data_inizio_presentazione':
+            pr.tipo = 21100
+        else:
+            pr.tipo = 21200
+        pr.oggetto = doc.getItem('descrizione_intervento','')
+        pr.note = ""
+        pr.protocollo = doc.getItem('numero_protocollo','')
+        pr.data_prot = doc.getItem('data_prot',DateTime()).strftime("%d/%m/%Y")
+        pr.data_presentazione = doc.getItem('data_presentazione',DateTime().strftime("%d/%m/%Y"))
+        pr.online = 1
+        pr.resp_proc = self.resp_proc
+        pr.data_resp = DateTime().strftime("%d/%m/%Y")
+        return pr
+
+    def getSoggetti(self,obj):
+        ftype = obj.client.factory.create('soggetto')
+        return ftype
+
+    def getIndirizzi(self,obj):
+        ftype = obj.client.factory.create('indirizzo')
+        return ftype
+
+    def getCT(self,obj):
+        ftype = obj.client.factory.create('particella')
+        return ftype
+
+    def getCU(self,obj):
+        ftype = obj.client.factory.create('particella')
+        return ftype
