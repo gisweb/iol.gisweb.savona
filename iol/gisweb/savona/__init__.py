@@ -19,3 +19,6 @@ gsm.registerUtility(app, IIolApp, 'default')
 
 app = sciaApp()
 gsm.registerUtility(app, IIolApp, 'scia')
+
+app = cilaApp()
+gsm.registerUtility(app, IIolApp, 'cila')
