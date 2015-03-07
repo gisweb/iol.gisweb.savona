@@ -84,7 +84,7 @@ class sciaWsClient(object):
             soggetto = obj.client.factory.create('soggetto')
             for k,v in mapfields.items():
                 if v:
-                    rich[k] = r[v]
+                    soggetto[k] = r[v]
             soggetto['richiedente'] = 1
             soggetto['comunicazioni'] = 1
             # Il richiedente è anche proprietario
@@ -136,7 +136,7 @@ class sciaWsClient(object):
                 soggetto = obj.client.factory.create('soggetto')
                 for k,v in mapfields.items():
                     if v:
-                        rich[k] = r[v]
+                        soggetto[k] = r[v]
                 soggetto['esecutore'] = 1
                 soggetto['comunicazioni'] = 1
                 soggetti.append(soggetto)
@@ -144,9 +144,11 @@ class sciaWsClient(object):
 
     def getIndirizzi(self,obj):
         doc = obj.document
-        ftype = obj.client.factory.create('indirizzo')
+        indirizzi = list()
+        indirizzo = obj.client.factory.create('indirizzo')
+        mapfields = self.mapping['indirizzo']
 
-        return ftype
+        return indirizzi
 
     def getCT(self,obj):
         doc = obj.document
@@ -156,4 +158,9 @@ class sciaWsClient(object):
     def getCU(self,obj):
         doc = obj.document
         ftype = obj.client.factory.create('particella')
+        return ftype
+
+    def getAllegati(self,obj):
+        doc = obj.document
+        ftype = obj.client.factory.create('allegato')
         return ftype
