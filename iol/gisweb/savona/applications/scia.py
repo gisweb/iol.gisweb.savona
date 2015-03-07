@@ -9,6 +9,7 @@ from DateTime import DateTime
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
 from iol.gisweb.utils.IolDocument import IolDocument
+from iol.gisweb.utils import loadJsonFile,dateEncoder
 
 from .praticaweb import getConvData,genericTable
 from plomino.replication.pgReplication import getPlominoValues
@@ -42,6 +43,7 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
+        self.mapping = loadJsonFile('./mapping/scia.json')
         pass
 
     security.declarePublic('getProcedimento')
@@ -65,21 +67,80 @@ class sciaWsClient(object):
     def getSoggetti(self,obj):
         doc = obj.document
         idoc = IolDocument(doc)
-        ftype = obj.client.factory.create('soggetto')
         soggetti = list()
-        fields = [f.id for f in doc.getParentDatabase().getForm('sub_fisica_giuridica').getFormFields(includesubforms=True)]
-        rich = dict()
-        map = dict()
-        for f in fields:
-            rich[map[f]] = json.dumps(doc.getItem(id,None),default=DateTime.ISO,use_decimals=True)
-        rich['richiedente'] = 1
-        soggetti.append(rich)
+        # Recupero informazioni sui richiedenti/proprietari
+        soggetto = obj.client.factory.create('soggetto')
+        mapfields = self.mapping['richiedente']
+        for k,v in mapfields.items():
+            if v:
+                soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+        soggetto['richiedente'] = 1
+        soggetto['comunicazioni'] = 1
+        # Il richiedente è anche proprietario
+        if doc.getItem('fisica_titolo', '').lower() == 'proprietario':
+            soggetto['proprietario'] = 1
+        soggetti.append(soggetto)
         for r in idoc.getDatagridValue('frm_scia_richiedenti','anagrafica_soggetti'):
-            rich = dict()
-            for k,v in i.items():
-                rich[map[k]] = v
-            rich['richiedente'] = 1
-        return ftype
+            soggetto = obj.client.factory.create('soggetto')
+            for k,v in mapfields.items():
+                if v:
+                    rich[k] = r[v]
+            soggetto['richiedente'] = 1
+            soggetto['comunicazioni'] = 1
+            # Il richiedente è anche proprietario
+            if r['fisica_titolo'].lower() == 'proprietario':
+                soggetto['proprietario'] = 1
+            soggetti.append(soggetto)
+
+        # Recupero informazioni sul progettista
+        soggetto = obj.client.factory.create('soggetto')
+        mapfields = self.mapping['progettista']
+        for k,v in mapfields.items():
+            if v:
+                soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+        soggetto['progettista'] = 1
+        soggetto['comunicazioni'] = 1
+        soggetti.append(soggetto)
+
+        direttore = doc.getItem('direttore_opt','nodirettore')
+
+        # Il progettista è anche direttore lavori
+        if direttore == 'direttoreesecutore':
+            soggetto['direttore'] = 1
+        # Recupero informazioni sul direttore lavori
+        elif direttore == 'direttore':
+            soggetto = obj.client.factory.create('soggetto')
+            mapfields = self.mapping['direttore']
+            for k,v in mapfields.items():
+                if v:
+                    soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+            soggetto['direttore'] = 1
+            soggetto['comunicazioni'] = 1
+            soggetti.append(soggetto)
+
+        # Recupero informazioni sugli esecutori se necessario
+        if doc.getItem('lavori_economia_opt','economia'):
+            pass
+        else:
+            soggetto = obj.client.factory.create('soggetto')
+            mapfields = self.mapping['esecutore']
+            for k,v in mapfields.items():
+                if v:
+                    soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+
+            soggetto['esecutore'] = 1
+            soggetto['comunicazioni'] = 1
+
+            soggetti.append(soggetto)
+            for r in idoc.getDatagridValue('frm_scia_altri_soggetti','altri_esecutori'):
+                soggetto = obj.client.factory.create('soggetto')
+                for k,v in mapfields.items():
+                    if v:
+                        rich[k] = r[v]
+                soggetto['esecutore'] = 1
+                soggetto['comunicazioni'] = 1
+                soggetti.append(soggetto)
+        return soggetti
 
     def getIndirizzi(self,obj):
         doc = obj.document
