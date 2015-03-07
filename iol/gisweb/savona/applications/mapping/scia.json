@@ -251,5 +251,21 @@
         "titolod":"esecutore_qualita",
         "titolod_note":"",
         "voltura":""
+    },
+    "indirizzo":{
+        "via" : "civico_via",
+        "civico" : "civico_civico",
+        "interno" : civico_"interno"
+    },
+    "nct":{
+        "sezione" : "nct_sezione",
+        "foglio" : "nct_foglio",
+        "mappale" : "nct_mappale"
+    },
+    "nceu":{
+        "sezione" : "nceu_sezione",
+        "foglio" : "nceu_foglio",
+        "mappale" : "nceu_mappale",
+        "sub" : "nceu_subalterno"
     }
 }
