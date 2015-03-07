@@ -24,13 +24,8 @@ class IolWSPraticaWeb(object):
         self.document = obj
         self.service = service
         self.tipo_app = self.document.getItem(config.APP_FIELD,config.APP_FIELD_DEFAULT_VALUE)
-        #if not service.endswith('?wsdl'):
-        #    service = "%s?wsdl" %service
 
         self.client = Client(service)
-
-    def _convertTipoPratica(self):
-        pass 
 
     def aggiungi_pratica(self):
         client = self.client
@@ -53,40 +48,18 @@ class IolWSPraticaWeb(object):
 
         indirizzi = utils.getIndirizzi(self)
 
-        res = client.service.aggiungiPratica(pr,soggetti,indirizzi)
+        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'getNCT' in dir(utils):
+            utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)
 
-        #####################################
+        nct = utils.getNCT(self)
 
-        message = list()
-        pratica = res['pratica']
-        indirizzi = doc.getItem('elenco_civici',[])
-        for i in indirizzi:
-            ind = client.factory.create('indirizzo')
-            ind.via = i[0]
-            ind.civico = i[1]
-            ind.interno = i[2]
-            client.service.aggiungiIndirizzo(pratica,ind)
+        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'getNCEU' in dir(utils):
+            utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)
 
-        ct = doc.getItem('elenco_nct',[])
-        for i in ct:
-            el = client.factory.create('particella')
-            el.foglio = i[1]
-            el.mappale = i[2]
+        nceu = utils.getNCEU(self)
 
-            r = client.service.aggiungiCatastoTerreni(pratica,el)
-            if r['success'] == -1:
-                message.append("Errori nell'inserimento dei dati del catasto terreni")
+        res = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct,nceu)
 
-        cu = doc.getItem('elenco_nceu',[])
-        for i in cu:
-            el = client.factory.create('particella')
-            el.foglio = i[1]
-            el.mappale = i[2]
-            el.sub = i[3]
-            r = client.service.aggiungiCatastoUrbano(pratica,el)
-            if r['success'] == -1:
-                message.append("Errori nell'inserimento dei dati del catasto urbano")
-
-        return dict(success = res['success'],numero=res['numero_pratica'], messages = message)
-        #sogg = client.factory.create('soggetto')
-        #
+        return res

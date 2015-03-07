@@ -267,5 +267,8 @@
         "foglio" : "nceu_foglio",
         "mappale" : "nceu_mappale",
         "sub" : "nceu_subalterno"
-    }
+    },
+  "allegati":{
+    "":[]
+  }
 }

@@ -80,7 +80,7 @@ class sciaWsClient(object):
         if doc.getItem('fisica_titolo', '').lower() == 'proprietario':
             soggetto['proprietario'] = 1
         soggetti.append(soggetto)
-        for r in idoc.getDatagridValue('frm_scia_richiedenti','anagrafica_soggetti'):
+        for r in idoc.getDatagridValue('anagrafica_soggetti'):
             soggetto = obj.client.factory.create('soggetto')
             for k,v in mapfields.items():
                 if v:
@@ -132,7 +132,7 @@ class sciaWsClient(object):
             soggetto['comunicazioni'] = 1
 
             soggetti.append(soggetto)
-            for r in idoc.getDatagridValue('frm_scia_altri_soggetti','altri_esecutori'):
+            for r in idoc.getDatagridValue('altri_esecutori'):
                 soggetto = obj.client.factory.create('soggetto')
                 for k,v in mapfields.items():
                     if v:
@@ -144,21 +144,42 @@ class sciaWsClient(object):
 
     def getIndirizzi(self,obj):
         doc = obj.document
-        indirizzi = list()
-        indirizzo = obj.client.factory.create('indirizzo')
+        idoc = IolDocument(doc)
+        results = list()
         mapfields = self.mapping['indirizzo']
+        for r in idoc.getDatagridValue('elenco_civici'):
+            fType = obj.client.factory.create('indirizzo')
+            for k,v in mapfields.items():
+                if v:
+                    fType[k] = r[v]
+            results.append(fType)
+        return results
 
-        return indirizzi
-
-    def getCT(self,obj):
+    def getNCT(self,obj):
         doc = obj.document
-        ftype = obj.client.factory.create('particella')
-        return ftype
+        idoc = IolDocument(doc)
+        results = list()
+        mapfields = self.mapping['nct']
+        for r in idoc.getDatagridValue('elenco_nct'):
+            fType = obj.client.factory.create('particella')
+            for k,v in mapfields.items():
+                if v:
+                    fType[k] = r[v]
+            results.append(fType)
+        return results
 
-    def getCU(self,obj):
+    def getNCEU(self,obj):
         doc = obj.document
-        ftype = obj.client.factory.create('particella')
-        return ftype
+        idoc = IolDocument(doc)
+        results = list()
+        mapfields = self.mapping['nceu']
+        for r in idoc.getDatagridValue('elenco_nceu'):
+            fType = obj.client.factory.create('particella')
+            for k,v in mapfields.items():
+                if v:
+                    fType[k] = r[v]
+            results.append(fType)
+        return results
 
     def getAllegati(self,obj):
         doc = obj.document
