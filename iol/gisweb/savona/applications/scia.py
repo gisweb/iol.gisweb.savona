@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from zope.interface import implements
-import iol.gisweb.savona as savona
+
 from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
 
 from AccessControl import ClassSecurityInfo
