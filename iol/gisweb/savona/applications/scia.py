@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import os
 from zope.interface import implements
+from iol.gisweb import savona
 from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
 
 from AccessControl import ClassSecurityInfo
@@ -21,8 +23,7 @@ class sciaApp(object):
     security = ClassSecurityInfo()
     def __init__(self):
         pass
-    def __call__(self, *args, **kwargs):
-        pass
+
     #Returns dict with all roles->users/groups defined in Iol application
     security.declarePublic('NuovoNumeroPratica')
     def NuovoNumeroPratica(self,obj):
@@ -45,7 +46,7 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-        self.mapping = loadJsonFile('./mapping/scia.json')
+        self.mapping = loadJsonFile('%s/application/mapping/scia.json' % (os.path.dirname(savona.__file__)))
         pass
 
     security.declarePublic('getProcedimento')
