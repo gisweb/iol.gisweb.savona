@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from zope.interface import implements
-from iol.gisweb import savona
+import iol.gisweb.savona as savona
 from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
 
 from AccessControl import ClassSecurityInfo
@@ -46,7 +46,7 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-        self.mapping = loadJsonFile('%s/application/mapping/scia.json' % (os.path.dirname(savona.__file__)))
+        self.mapping = loadJsonFile('%s/applications/mapping/scia.json' % (os.path.dirname(savona.__file__)))
         pass
 
     security.declarePublic('getProcedimento')
