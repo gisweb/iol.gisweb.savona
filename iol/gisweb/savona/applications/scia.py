@@ -46,8 +46,9 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-        self.mapping = loadJsonFile('/home/istanze/buildout-praticaweb/src/iol.gisweb.savona/iol/gisweb/savona/applications/mapping/scia-min.json').result
-        pass
+        d = loadJsonFile('/home/istanze/buildout-praticaweb/src/iol.gisweb.savona/iol/gisweb/savona/applications/mapping/scia-min.json')
+        self.mapping = d.result
+
 
     security.declarePublic('getProcedimento')
     def getProcedimento(self, obj):
@@ -188,6 +189,7 @@ class sciaWsClient(object):
         doc = obj.document
         idoc = IolDocument(doc)
         results = list()
+        import pdb;pdb.set_trace()
         mapfields = self.mapping['allegato']
         for k, v in mapfields.items():
             allegato = obj.client.factory.create('allegato')
