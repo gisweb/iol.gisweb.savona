@@ -203,7 +203,8 @@ class sciaWsClient(object):
                         file_allegato.file_size = info['size']
                         file_allegato.file = info['b64file']
                         files_allegati.append(file_allegato)
-            allegato.documento = k
-            allegato.allegato = 1
-            allegato.files = files_allegati
+                allegato.documento = k
+                allegato.allegato = 1
+                allegato.files = files_allegati
+            results.append(allegato)
         return results
