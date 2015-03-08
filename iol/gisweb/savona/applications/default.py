@@ -3,7 +3,7 @@ from zope.interface import implements
 from zope import component
 from AccessControl import ClassSecurityInfo
 from plone import api
-from iol.gisweb.savona.interfaces import IIolApp
+from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
 from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL_REMOVE_PERMISSION
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
@@ -86,4 +86,33 @@ class defaultApp(object):
         db.getIndex().indexDocument(obj)
         # update portal_catalog
         if db.getIndexInPortal():
-            db.portal_catalog.catalog_object(obj, "/".join(db.getPhysicalPath() + (obj.getId(),)))      
+            db.portal_catalog.catalog_object(obj, "/".join(db.getPhysicalPath() + (obj.getId(),)))
+
+
+
+class defaultWsClient(object):
+    implements(IIolPraticaWeb)
+    security = ClassSecurityInfo()
+    def __init__(self):
+        pass
+
+    security.declarePublic('getProcedimento')
+    def getProcedimento(self,obj):
+        pr = obj.client.factory.create('procedimento')
+        return pr
+
+    def getSoggetti(self,obj):
+        ftype = obj.client.factory.create('soggetto')
+        return ftype
+
+    def getIndirizzi(self,obj):
+        ftype = obj.client.factory.create('indirizzo')
+        return ftype
+
+    def getCT(self,obj):
+        ftype = obj.client.factory.create('particella')
+        return ftype
+
+    def getCU(self,obj):
+        ftype = obj.client.factory.create('particella')
+        return ftype

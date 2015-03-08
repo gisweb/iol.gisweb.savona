@@ -1,14 +1,17 @@
+# -*- coding: utf-8 -*-
 from zope.interface import implements
-from iol.gisweb.savona.interfaces import IIolApp
-from zope import component
+from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
+
 from AccessControl import ClassSecurityInfo
 import simplejson as json
-from plone import api
 
-import sqlalchemy as sql
-import sqlalchemy.orm as orm
+from DateTime import DateTime
+
+from base64 import b64encode
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
+from iol.gisweb.utils.IolDocument import IolDocument
+from iol.gisweb.utils import loadJsonFile,dateEncoder
 
 from .praticaweb import getConvData,genericTable
 from plomino.replication.pgReplication import getPlominoValues
@@ -24,7 +27,7 @@ class sciaApp(object):
     security.declarePublic('NuovoNumeroPratica')
     def NuovoNumeroPratica(self,obj):
         idx = obj.getParentDatabase().getIndex()
-        query = dict(IOL_NUM_FIELD = dict(query=0, range='min'))
+        query = dict(IOL_NUM_FIELD = dict(query=0, range='min'),iol_tipo_app = 'scia' )
 
         brains = idx.dbsearch(query, sortindex=IOL_NUM_FIELD, reverse=1, only_allowed=False)
         if not brains:
@@ -34,35 +37,171 @@ class sciaApp(object):
 
         return nuovoNumero
 
-    security.declarePublic('InvioPraticaweb')
-    def invioPraticaweb(self,obj):
-        plominoData = getPlominoValues(obj)
-        if plominoData['data_inizio_lavori_opt'] == 'scia_data_inizio_presentazione':
-            plominoData["tipo"] = 21100
-        else:
-            plominoData["tipo"] = 21200
 
-        data = getConvData('scia')
-        for d in data:
-            #cfg = conf(d)
-            cfg = d
-            try:
-                db = sql.create_engine(cfg['conn_string'])
-                metadata = sql.schema.MetaData(bind=db,reflect=True,schema=cfg['schema'])
-                table = sql.Table(cfg['table'], metadata, autoload=True)
-                orm.clear_mappers()
-                rowmapper = orm.mapper(genericTable,table)
-            except Exception as e:
-                api.portal.show_message(message=u'Si sono verificati errori nella connessione al database : %s' %str(e), request=obj.REQUEST )
-                return -1
-            #creating session
-            Sess = orm.sessionmaker(bind = db)
-            session = Sess()
-            row = genericTable(d['conversion_file'],plominoData)
-            session = Sess()
-            #adding row to database
-            session.add(row)
-            session.commit()
-            session.close()
-            db.dispose()
-        return 1
+
+
+class sciaWsClient(object):
+    implements(IIolPraticaWeb)
+    security = ClassSecurityInfo()
+    def __init__(self):
+        self.resp_proc = 24
+        self.mapping = loadJsonFile('./mapping/scia.json')
+        pass
+
+    security.declarePublic('getProcedimento')
+    def getProcedimento(self, obj):
+        doc = obj.document
+        pr = obj.client.factory.create('procedimento')
+        if doc.getItem('data_inizio_lavori_opt','scia_data_inizio_presentazione')=='scia_data_inizio_presentazione':
+            pr.tipo = 21100
+        else:
+            pr.tipo = 21200
+        pr.oggetto = doc.getItem('descrizione_intervento','')
+        pr.note = ""
+        pr.protocollo = doc.getItem('numero_protocollo','')
+        pr.data_prot = doc.getItem('data_prot',DateTime()).strftime("%d/%m/%Y")
+        pr.data_presentazione = doc.getItem('data_presentazione',DateTime().strftime("%d/%m/%Y"))
+        pr.online = 1
+        pr.resp_proc = self.resp_proc
+        pr.data_resp = DateTime().strftime("%d/%m/%Y")
+        return pr
+
+    def getSoggetti(self, obj):
+        doc = obj.document
+        idoc = IolDocument(doc)
+        soggetti = list()
+        # Recupero informazioni sui richiedenti/proprietari
+        soggetto = obj.client.factory.create('soggetto')
+        mapfields = self.mapping['richiedente']
+        for k, v in mapfields.items():
+            if v:
+                soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+        soggetto['richiedente'] = 1
+        soggetto['comunicazioni'] = 1
+        # Il richiedente è anche proprietario
+        if doc.getItem('fisica_titolo', '').lower() == 'proprietario':
+            soggetto['proprietario'] = 1
+        soggetti.append(soggetto)
+        for r in idoc.getDatagridValue('anagrafica_soggetti'):
+            soggetto = obj.client.factory.create('soggetto')
+            for k, v in mapfields.items():
+                if v:
+                    soggetto[k] = r[v]
+            soggetto['richiedente'] = 1
+            soggetto['comunicazioni'] = 1
+            # Il richiedente è anche proprietario
+            if r['fisica_titolo'].lower() == 'proprietario':
+                soggetto['proprietario'] = 1
+            soggetti.append(soggetto)
+
+        # Recupero informazioni sul progettista
+        soggetto = obj.client.factory.create('soggetto')
+        mapfields = self.mapping['progettista']
+        for k, v in mapfields.items():
+            if v:
+                soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+        soggetto['progettista'] = 1
+        soggetto['comunicazioni'] = 1
+        soggetti.append(soggetto)
+
+        direttore = doc.getItem('direttore_opt','nodirettore')
+
+        # Il progettista è anche direttore lavori
+        if direttore == 'direttoreesecutore':
+            soggetto['direttore'] = 1
+        # Recupero informazioni sul direttore lavori
+        elif direttore == 'direttore':
+            soggetto = obj.client.factory.create('soggetto')
+            mapfields = self.mapping['direttore']
+            for k, v in mapfields.items():
+                if v:
+                    soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+            soggetto['direttore'] = 1
+            soggetto['comunicazioni'] = 1
+            soggetti.append(soggetto)
+
+        # Recupero informazioni sugli esecutori se necessario
+        if doc.getItem('lavori_economia_opt','economia'):
+            pass
+        else:
+            soggetto = obj.client.factory.create('soggetto')
+            mapfields = self.mapping['esecutore']
+            for k, v in mapfields.items():
+                if v:
+                    soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+
+            soggetto['esecutore'] = 1
+            soggetto['comunicazioni'] = 1
+
+            soggetti.append(soggetto)
+            for r in idoc.getDatagridValue('altri_esecutori'):
+                soggetto = obj.client.factory.create('soggetto')
+                for k, v in mapfields.items():
+                    if v:
+                        soggetto[k] = r[v]
+                soggetto['esecutore'] = 1
+                soggetto['comunicazioni'] = 1
+                soggetti.append(soggetto)
+        return soggetti
+
+    def getIndirizzi(self, obj):
+        doc = obj.document
+        idoc = IolDocument(doc)
+        results = list()
+        mapfields = self.mapping['indirizzo']
+        for r in idoc.getDatagridValue('elenco_civici'):
+            fType = obj.client.factory.create('indirizzo')
+            for k, v in mapfields.items():
+                if v:
+                    fType[k] = r[v]
+            results.append(fType)
+        return results
+
+    def getNCT(self, obj):
+        doc = obj.document
+        idoc = IolDocument(doc)
+        results = list()
+        mapfields = self.mapping['nct']
+        for r in idoc.getDatagridValue('elenco_nct'):
+            fType = obj.client.factory.create('particella')
+            for k, v in mapfields.items():
+                if v:
+                    fType[k] = r[v]
+            results.append(fType)
+        return results
+
+    def getNCEU(self, obj):
+        doc = obj.document
+        idoc = IolDocument(doc)
+        results = list()
+        mapfields = self.mapping['nceu']
+        for r in idoc.getDatagridValue('elenco_nceu'):
+            fType = obj.client.factory.create('particella')
+            for k, v in mapfields.items():
+                if v:
+                    fType[k] = r[v]
+            results.append(fType)
+        return results
+
+    def getAllegati(self, obj):
+        doc = obj.document
+        idoc = IolDocument(doc)
+        results = list()
+        mapfields = self.mapping['allegato']
+        for k, v in mapfields.items():
+            allegato = obj.client.factory.create('allegato')
+            files_allegati = list()
+            for el in v:
+                f = idoc.getAttachmentInfo(el)
+                if f:
+                    for info in f:
+                        file_allegato = obj.client.factory.create('file_allegato')
+                        file_allegato.nome_file = info.name
+                        file_allegato.tipo_file = info.mimetype
+                        file_allegato.file_size = info.size
+                        file_allegato.file = info.b64file
+                        files_allegati.append(file_allegato)
+            allegato.documento = k
+            allegato.allegato = 1
+            allegato.files = files_allegati
+        return results
