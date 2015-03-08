@@ -189,7 +189,6 @@ class sciaWsClient(object):
         doc = obj.document
         idoc = IolDocument(doc)
         results = list()
-        import pdb;pdb.set_trace()
         mapfields = self.mapping['allegato']
         for k, v in mapfields.items():
             allegato = obj.client.factory.create('allegato')
