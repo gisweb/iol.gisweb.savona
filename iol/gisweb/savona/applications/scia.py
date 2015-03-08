@@ -46,7 +46,7 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-        d = loadJsonFile('/home/istanze/buildout-praticaweb/src/iol.gisweb.savona/iol/gisweb/savona/applications/mapping/scia-min.json')
+        d = loadJsonFile('/home/istanze/buildout-praticaweb/src/iol.gisweb.savona/iol/gisweb/savona/applications/mapping/scia.json')
         self.mapping = d.result
 
 
