@@ -259,7 +259,7 @@
     "nct": {
         "sezione": "nct_sezione",
         "foglio": "nct_foglio",
-        "mappale": "nct_mappale"
+        "mappale": "nct_particella"
     },
     "nceu": {
         "sezione": "nceu_sezione",
