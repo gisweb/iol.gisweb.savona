@@ -46,7 +46,7 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-        self.mapping = loadJsonFile('/home/istanze/buildout-praticaweb/src/iol.gisweb.savona/iol/gisweb/savona/applications/mapping/scia-min.json').result
+        self.mapping = loadJsonFile('./mapping/scia-min.json').result
         pass
 
     security.declarePublic('getProcedimento')
