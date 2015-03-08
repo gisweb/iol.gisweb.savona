@@ -31,35 +31,35 @@ class IolWSPraticaWeb(object):
         client = self.client
         doc = self.document
 
-        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        utils = queryUtility(IIolPraticaWeb, name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
         if not 'getProcedimento' in dir(utils):
-            utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
 
         pr = utils.getProcedimento(self)
 
-        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        utils = queryUtility(IIolPraticaWeb, name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
         if not 'getSoggetti' in dir(utils):
-            utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
         soggetti = utils.getSoggetti(self)
 
-        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        utils = queryUtility(IIolPraticaWeb, name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
         if not 'getIndirizzi' in dir(utils):
-            utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
 
         indirizzi = utils.getIndirizzi(self)
 
-        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        utils = queryUtility(IIolPraticaWeb, name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
         if not 'getNCT' in dir(utils):
-            utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
 
         nct = utils.getNCT(self)
 
         utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
         if not 'getNCEU' in dir(utils):
-            utils = getUtility(IIolPraticaWeb,config.APP_FIELD_DEFAULT_VALUE)
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
 
         nceu = utils.getNCEU(self)
 
-        res = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct,nceu)
+        res = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct, nceu)
 
         return res

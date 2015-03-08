@@ -268,7 +268,58 @@
         "mappale" : "nceu_mappale",
         "sub" : "nceu_subalterno"
     },
-  "allegati":{
-    "":[]
+    "allegato":{
+        "500" : ["scia_ricevuta_versamento"],
+        "501" : ["allegato_ditta_esecutrice"],
+        "502" : [],
+        "503" : ["allegato_relazione_tecnica_progettista"],
+        "504" : ["allegato_att_conform_urbanistica"],
+        "505" : [
+            "nuova_unita_elaborato_allegato",
+            "nuova_unita_versamento_allegato"
+        ],
+        "506" : [],
+        "507" : [],
+        "508" : ["allegati_elab_cartografici"],
+        "509" : ["allegati_elab_grafici"],
+        "510" : ["allegati_visura_plan_catastale"],
+        "511" : ["allegati_calcoli_statici"],
+        "512" : ["allegati_doc_foto_stato"],
+        "513" : ["allegati_doc_illustrativa"],
+        "514" : ["allegati_dich_conformita"],
+        "515" : ["allegati_prog_imp_termici"],
+        "516" : ["allegati_doc_prescritta_art3"],
+        "517" : ["allegati_prog_illumino_tecnico"],
+        "518" : ["allegati_autocert_scavo_rocce"],
+        "519" : ["allegati_indag_geo_tecnica"],
+        "520" : ["allegati_atti_risp_energetico"],
+        "521" : ["allegati_rel_idraulica"],
+        "522" : ["allegati_computo_superf"],
+        "523" : ["allegati_computo_parcheggi"],
+        "524" : ["allegati_elab_parcheggi"],
+        "525" : ["allegati_standards_urbanistici"],
+        "526" : ["allegati_standards_pubblici"],
+        "527" : ["allegati_versam_parcheggi"],
+        "528" : [
+            "allegati_pareri_assensi",
+            "parere_allegato_01",
+            "parere_allegato_02",
+            "parere_allegato_03",
+            "parere_allegato_04",
+            "parere_allegato_05",
+            "parere_allegato_06",
+            "parere_allegato_07",
+            "parere_allegato_08",
+            "parere_allegato_09",
+            "parere_allegato_010",
+            "parere_allegato_011",
+            "parere_allegato_012",
+            "parere_allegato_013",
+            "parere_allegato_014",
+            "parere_allegato_altro_01",
+            "parere_allegato_altro_02"
+        ],
+        "529" : ["allegati_atti_impegno"],
+        "530" : ["allegati_ricevuta_istat"]
   }
 }
