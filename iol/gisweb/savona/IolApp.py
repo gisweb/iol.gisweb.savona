@@ -34,4 +34,25 @@ class IolApp(object):
         utils = getUtility(IIolApp,app)
         return utils.invioPraticaweb(self.document)
 
+    security.declarePublic('accreditaUtente')
+    def accreditaUtente(self):
+        app = self.document.getItem(config.APP_FIELD,config.APP_FIELD_DEFAULT_VALUE)
+        utils = getUtility(IIolApp,'default')
+        return utils.accreditaUtente(self.document)
+
+    security.declarePublic('createPdf')
+    def createPdf(self,filename,itemname='documento_da_firmare',overwrite=False):
+        utils = getUtility(IIolApp,'default')
+        return utils.createPdf(self.document,filename,itemname,overwrite)
+    
+    security.declarePublic('updateStatus')
+    def updateStatus(self):
+        utils = getUtility(IIolApp,'default')
+        return utils.updateStatus(self.document)
+
+    security.declarePublic('reindex_doc')
+    def reindex_doc(self):
+        utils = getUtility(IIolApp,'default')
+        return utils.reindex_doc(self.document)    
+
 InitializeClass(IolApp)
