@@ -150,12 +150,20 @@ class sciaWsClient(object):
         doc = obj.document
         idoc = IolDocument(doc)
         results = list()
+        elencoVie = dict()
+        vie = obj.client.service.elencoVie()[2]
+        for via in vie:
+            elencoVie[via.value] = via.label
+
         mapfields = self.mapping['indirizzo']
         for r in idoc.getDatagridValue('elenco_civici'):
             fType = obj.client.factory.create('indirizzo')
             for k, v in mapfields.items():
                 if v:
-                    fType[k] = r[v]
+                    if k == 'via':
+                        fType[k] = elencoVie[r[v]]
+                    else:
+                        fType[k] = r[v]
             results.append(fType)
         return results
 
