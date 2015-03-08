@@ -153,7 +153,7 @@ class sciaWsClient(object):
         elencoVie = dict()
         vie = obj.client.service.elencoVie()[2]
         for via in vie:
-            elencoVie[via.value] = via.label
+            elencoVie[str(via.value)] = str(via.label)
 
         mapfields = self.mapping['indirizzo']
         for r in idoc.getDatagridValue('elenco_civici'):
