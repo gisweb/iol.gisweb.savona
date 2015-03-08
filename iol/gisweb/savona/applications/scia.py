@@ -198,10 +198,10 @@ class sciaWsClient(object):
                 if f:
                     for info in f:
                         file_allegato = obj.client.factory.create('file_allegato')
-                        file_allegato.nome_file = info.name
-                        file_allegato.tipo_file = info.mimetype
-                        file_allegato.file_size = info.size
-                        file_allegato.file = info.b64file
+                        file_allegato.nome_file = info['name']
+                        file_allegato.tipo_file = info['mimetype']
+                        file_allegato.file_size = info['size']
+                        file_allegato.file = info['b64file']
                         files_allegati.append(file_allegato)
             allegato.documento = k
             allegato.allegato = 1
