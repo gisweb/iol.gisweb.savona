@@ -117,7 +117,12 @@ class sciaWsClient(object):
         mapfields = self.mapping['progettista']
         for k, v in mapfields.items():
             if v:
-                soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+                value = doc.getItem(v,None)
+                if isinstance(value,DateTime):
+                    soggetto[k] = value.strftime("%d/%m/%Y")
+                else:
+                    soggetto[k] = value
+                #soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
         soggetto['progettista'] = 1
         soggetto['comunicazioni'] = 1
         if soggetto['sesso'] == 'Maschile':
