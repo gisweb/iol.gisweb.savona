@@ -260,5 +260,6 @@ class sciaWsClient(object):
                 allegato.documento = k
                 allegato.allegato = 1
                 allegato.files = files_allegati
-            results.append(allegato)
+            if allegato.files:
+                results.append(allegato)
         return results
