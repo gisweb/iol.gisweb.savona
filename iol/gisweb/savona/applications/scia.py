@@ -80,7 +80,10 @@ class sciaWsClient(object):
                 soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
         soggetto['richiedente'] = 1
         soggetto['comunicazioni'] = 1
-        soggetto['sesso'] = soggetto['sesso'][0]
+        if soggetto['sesso'] == 'Maschile':
+            soggetto['sesso'] = 'M'
+        else:
+            soggetto['sesso'] = 'F'
         # Il richiedente è anche proprietario
         if doc.getItem('fisica_titolo', '').lower() == 'proprietario':
             soggetto['proprietario'] = 1
@@ -92,7 +95,10 @@ class sciaWsClient(object):
                     soggetto[k] = r[v]
             soggetto['richiedente'] = 1
             soggetto['comunicazioni'] = 1
-            soggetto['sesso'] = soggetto['sesso'][0]
+            if soggetto['sesso'] == 'Maschile':
+                soggetto['sesso'] = 'M'
+            else:
+                soggetto['sesso'] = 'F'
             # Il richiedente è anche proprietario
             if r['fisica_titolo'].lower() == 'proprietario':
                 soggetto['proprietario'] = 1
@@ -106,7 +112,10 @@ class sciaWsClient(object):
                 soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
         soggetto['progettista'] = 1
         soggetto['comunicazioni'] = 1
-        soggetto['sesso'] = soggetto['sesso'][0]
+        if soggetto['sesso'] == 'Maschile':
+            soggetto['sesso'] = 'M'
+        else:
+            soggetto['sesso'] = 'F'
         soggetti.append(soggetto)
 
         direttore = doc.getItem('direttore_opt','nodirettore')
@@ -123,7 +132,10 @@ class sciaWsClient(object):
                     soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
             soggetto['direttore'] = 1
             soggetto['comunicazioni'] = 1
-            soggetto['sesso'] = soggetto['sesso'][0]
+            if soggetto['sesso'] == 'Maschile':
+                soggetto['sesso'] = 'M'
+            else:
+                soggetto['sesso'] = 'F'
             soggetti.append(soggetto)
 
         # Recupero informazioni sugli esecutori se necessario
@@ -138,7 +150,10 @@ class sciaWsClient(object):
 
             soggetto['esecutore'] = 1
             soggetto['comunicazioni'] = 1
-            soggetto['sesso'] = soggetto['sesso'][0]
+            if soggetto['sesso'] == 'Maschile':
+                soggetto['sesso'] = 'M'
+            else:
+                soggetto['sesso'] = 'F'
 
             soggetti.append(soggetto)
             for r in idoc.getDatagridValue('altri_esecutori'):
@@ -148,7 +163,10 @@ class sciaWsClient(object):
                         soggetto[k] = r[v]
                 soggetto['esecutore'] = 1
                 soggetto['comunicazioni'] = 1
-                soggetto['sesso'] = soggetto['sesso'][0]
+                if soggetto['sesso'] == 'Maschile':
+                    soggetto['sesso'] = 'M'
+                else:
+                    soggetto['sesso'] = 'F'
                 soggetti.append(soggetto)
         return soggetti
 
