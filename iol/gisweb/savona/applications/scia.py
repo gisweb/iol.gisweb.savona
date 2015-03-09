@@ -72,12 +72,16 @@ class sciaWsClient(object):
         doc = obj.document
         idoc = IolDocument(doc)
         soggetti = list()
+        ruoli = list('richiedente','proprietario','progettista','direttore','esecutore')
         # Recupero informazioni sui richiedenti/proprietari
         soggetto = obj.client.factory.create('soggetto')
+        for i in ruoli:
+            soggetto[i] = 0;
         mapfields = self.mapping['richiedente']
         for k, v in mapfields.items():
             if v:
                 soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+
         soggetto['richiedente'] = 1
         soggetto['comunicazioni'] = 1
         if soggetto['sesso'] == 'Maschile':
@@ -90,6 +94,8 @@ class sciaWsClient(object):
         soggetti.append(soggetto)
         for r in idoc.getDatagridValue('anagrafica_soggetti'):
             soggetto = obj.client.factory.create('soggetto')
+            for i in ruoli:
+                soggetto[i] = 0;
             for k, v in mapfields.items():
                 if v:
                     soggetto[k] = r[v]
@@ -106,6 +112,8 @@ class sciaWsClient(object):
 
         # Recupero informazioni sul progettista
         soggetto = obj.client.factory.create('soggetto')
+        for i in ruoli:
+            soggetto[i] = 0;
         mapfields = self.mapping['progettista']
         for k, v in mapfields.items():
             if v:
@@ -116,16 +124,21 @@ class sciaWsClient(object):
             soggetto['sesso'] = 'M'
         else:
             soggetto['sesso'] = 'F'
-        soggetti.append(soggetto)
 
         direttore = doc.getItem('direttore_opt','nodirettore')
-
-        # Il progettista è anche direttore lavori
         if direttore == 'direttoreesecutore':
             soggetto['direttore'] = 1
+        soggetti.append(soggetto)
+
+
+
+        # Il progettista è anche direttore lavori
+
         # Recupero informazioni sul direttore lavori
-        elif direttore == 'direttore':
+        if direttore == 'direttore':
             soggetto = obj.client.factory.create('soggetto')
+            for i in ruoli:
+                soggetto[i] = 0;
             mapfields = self.mapping['direttore']
             for k, v in mapfields.items():
                 if v:
@@ -143,6 +156,8 @@ class sciaWsClient(object):
             pass
         else:
             soggetto = obj.client.factory.create('soggetto')
+            for i in ruoli:
+                soggetto[i] = 0;
             mapfields = self.mapping['esecutore']
             for k, v in mapfields.items():
                 if v:
@@ -158,6 +173,8 @@ class sciaWsClient(object):
             soggetti.append(soggetto)
             for r in idoc.getDatagridValue('altri_esecutori'):
                 soggetto = obj.client.factory.create('soggetto')
+                for i in ruoli:
+                    soggetto[i] = 0;
                 for k, v in mapfields.items():
                     if v:
                         soggetto[k] = r[v]
