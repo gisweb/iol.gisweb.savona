@@ -76,7 +76,7 @@ class sciaWsClient(object):
         # Recupero informazioni sui richiedenti/proprietari
         soggetto = obj.client.factory.create('soggetto')
         for i in ruoli:
-            soggetto[i] = "0";
+            soggetto[i] = 0;
         mapfields = self.mapping['richiedente']
         for k, v in mapfields.items():
             if v:
@@ -95,7 +95,7 @@ class sciaWsClient(object):
         for r in idoc.getDatagridValue('anagrafica_soggetti'):
             soggetto = obj.client.factory.create('soggetto')
             for i in ruoli:
-                soggetto[i] = "0";
+                soggetto[i] = 0;
             for k, v in mapfields.items():
                 if v:
                     soggetto[k] = r[v]
@@ -113,7 +113,7 @@ class sciaWsClient(object):
         # Recupero informazioni sul progettista
         soggetto = obj.client.factory.create('soggetto')
         for i in ruoli:
-            soggetto[i] = "0";
+            soggetto[i] = 0;
         mapfields = self.mapping['progettista']
         for k, v in mapfields.items():
             if v:
@@ -138,7 +138,7 @@ class sciaWsClient(object):
         if direttore == 'direttore':
             soggetto = obj.client.factory.create('soggetto')
             for i in ruoli:
-                soggetto[i] = "0";
+                soggetto[i] = 0;
             mapfields = self.mapping['direttore']
             for k, v in mapfields.items():
                 if v:
@@ -157,7 +157,7 @@ class sciaWsClient(object):
         else:
             soggetto = obj.client.factory.create('soggetto')
             for i in ruoli:
-                soggetto[i] = "0";
+                soggetto[i] = 0;
             mapfields = self.mapping['esecutore']
             for k, v in mapfields.items():
                 if v:
@@ -174,7 +174,7 @@ class sciaWsClient(object):
             for r in idoc.getDatagridValue('altri_esecutori'):
                 soggetto = obj.client.factory.create('soggetto')
                 for i in ruoli:
-                    soggetto[i] = "0";
+                    soggetto[i] = 0;
                 for k, v in mapfields.items():
                     if v:
                         soggetto[k] = r[v]
