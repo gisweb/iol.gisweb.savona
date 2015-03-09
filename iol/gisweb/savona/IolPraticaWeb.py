@@ -60,6 +60,12 @@ class IolWSPraticaWeb(object):
 
         nceu = utils.getNCEU(self)
 
-        res = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct, nceu)
+        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'getAllegati' in dir(utils):
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
+
+        allegati = utils.getAllegati(self)
+
+        res = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct, nceu,allegati)
 
         return res
