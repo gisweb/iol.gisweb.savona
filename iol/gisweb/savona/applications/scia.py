@@ -72,7 +72,7 @@ class sciaWsClient(object):
         doc = obj.document
         idoc = IolDocument(doc)
         soggetti = list()
-        ruoli = list('richiedente','proprietario','progettista','direttore','esecutore')
+        ruoli = ['richiedente','proprietario','progettista','direttore','esecutore']
         # Recupero informazioni sui richiedenti/proprietari
         soggetto = obj.client.factory.create('soggetto')
         for i in ruoli:
