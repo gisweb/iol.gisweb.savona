@@ -66,6 +66,9 @@ class IolWSPraticaWeb(object):
 
         allegati = utils.getAllegati(self)
 
-        res = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct, nceu, allegati)
+        result = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct, nceu, list())
+        if result["id"]:
+            for allegato in allegati:
+                res = client.service.aggiungiAllegato(result["id"],allegato)
 
-        return res
+        return result
