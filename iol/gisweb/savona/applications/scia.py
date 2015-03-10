@@ -48,7 +48,7 @@ class sciaWsClient(object):
         self.resp_proc = 24
         self.file = 'scia'
         self.path = os.path.dirname(os.path.abspath(__file__))
-        self.mapping = loadJsonFile("%s/mapping/%s.json" % (self.path,self.file))
+        self.mapping = loadJsonFile("%s/mapping/%s.json" % (self.path,self.file)).result
 
 
     security.declarePublic('getProcedimento')
