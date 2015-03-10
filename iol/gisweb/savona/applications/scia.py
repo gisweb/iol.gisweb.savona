@@ -109,8 +109,8 @@ class sciaWsClient(object):
             else:
                 soggetto['sesso'] = 'F'
             # Il richiedente è anche proprietario
-            if r['fisica_titolo'].lower() == 'proprietario':
-                soggetto['proprietario'] = 1
+            #if r['fisica_titolo'].lower() == 'proprietario':
+            #    soggetto['proprietario'] = 1
             soggetti.append(soggetto)
 
         # Recupero informazioni sul progettista
