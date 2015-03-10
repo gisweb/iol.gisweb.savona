@@ -12,13 +12,16 @@ iol.gisweb.savona.egg-info/requires.txt
 iol.gisweb.savona.egg-info/top_level.txt
 iol/gisweb/__init__.py
 iol/gisweb/savona/IolApp.py
+iol/gisweb/savona/IolPraticaWeb.py
 iol/gisweb/savona/__init__.py
 iol/gisweb/savona/config.py
 iol/gisweb/savona/interfaces.py
 iol/gisweb/savona/setuphandlers.py
 iol/gisweb/savona/tests.py
 iol/gisweb/savona/applications/__init__.py
+iol/gisweb/savona/applications/cila.py
 iol/gisweb/savona/applications/default.py
+iol/gisweb/savona/applications/praticaweb.py
 iol/gisweb/savona/applications/scia.py
 iol/gisweb/savona/browser/__init__.py
 iol/gisweb/savona/browser/views.py

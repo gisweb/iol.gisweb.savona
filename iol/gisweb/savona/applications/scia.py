@@ -46,7 +46,8 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-        d = loadJsonFile('/home/istanze/buildout-praticaweb/src/iol.gisweb.savona/iol/gisweb/savona/applications/mapping/scia.json')
+	path = os.path.dirname(os.path.abspath(__file__))
+        d = loadJsonFile('%s/mapping/scia.json' %path)
         self.mapping = d.result
 
 

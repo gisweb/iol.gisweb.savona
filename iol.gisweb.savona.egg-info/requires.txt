@@ -1,4 +1,5 @@
 setuptools
+suds
 plone.api
 Products.CMFPlomino
 iol.gisweb.utils
