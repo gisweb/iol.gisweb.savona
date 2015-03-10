@@ -46,9 +46,9 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-	path = os.path.dirname(os.path.abspath(__file__))
-        d = loadJsonFile('%s/mapping/scia.json' %path)
-        self.mapping = d.result
+        self.file = 'scia'
+        self.path = os.path.dirname(os.path.abspath(__file__))
+        self.mapping = loadJsonFile("%s/mapping/%s.json" % (self.path,self.file))
 
 
     security.declarePublic('getProcedimento')
