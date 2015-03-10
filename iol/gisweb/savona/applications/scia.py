@@ -97,8 +97,11 @@ class sciaWsClient(object):
             for i in ruoli:
                 soggetto[i] = 0;
             for k, v in mapfields.items():
-                if v and v in r.keys():
-                    soggetto[k] = r[v]
+                if v:
+                    if v in r.keys():
+                        soggetto[k] = r[v]
+                    else:
+                        soggetto[k] = ''
             soggetto['richiedente'] = 1
             soggetto['comunicazioni'] = 1
             if soggetto['sesso'] == 'Maschile':
@@ -181,8 +184,11 @@ class sciaWsClient(object):
                 for i in ruoli:
                     soggetto[i] = 0;
                 for k, v in mapfields.items():
-                    if v and v in r.keys():
-                        soggetto[k] = r[v]
+                    if v:
+                        if v in r.keys():
+                            soggetto[k] = r[v]
+                        else:
+                            soggetto[k] = ''
                 soggetto['esecutore'] = 1
                 soggetto['comunicazioni'] = 1
                 if soggetto['sesso'] == 'Maschile':
