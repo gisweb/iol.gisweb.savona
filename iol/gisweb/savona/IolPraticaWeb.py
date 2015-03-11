@@ -24,7 +24,6 @@ class IolWSPraticaWeb(object):
         self.document = obj
         self.service = service
         self.tipo_app = self.document.getItem(config.APP_FIELD,config.APP_FIELD_DEFAULT_VALUE)
-
         self.client = Client(service)
 
     def aggiungi_pratica(self):
@@ -71,5 +70,6 @@ class IolWSPraticaWeb(object):
         if result["pratica"]:
             for allegato in allegati:
                 res = client.service.aggiungiAllegato(result["pratica"],allegato)
+
 
         return result
