@@ -68,8 +68,18 @@ class IolWSPraticaWeb(object):
         result = client.service.aggiungiPratica(pr,soggetti,indirizzi,nct, nceu, list())
         result = dict(result)
         if result["pratica"]:
+            files_ok = files_err = 0
             for allegato in allegati:
                 res = client.service.aggiungiAllegato(result["pratica"],allegato)
-
-
+                nfiles = len(allegato.files)
+                res = dict(res)
+                if(res['success']==1):
+                    files_ok += res['cont']
+                    files_err += res['err']
+                else:
+                    files_err += nfiles
+            if files_err:
+                result['messages'].append("Si sono verificati %d errori nel trasferimento degli allegati" % files_err)
+            if files_ok:
+                result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
