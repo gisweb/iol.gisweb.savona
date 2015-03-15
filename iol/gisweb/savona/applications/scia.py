@@ -15,9 +15,6 @@ from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_
 from iol.gisweb.utils.IolDocument import IolDocument
 from iol.gisweb.utils import loadJsonFile,dateEncoder
 
-from .praticaweb import getConvData,genericTable
-from plomino.replication.pgReplication import getPlominoValues
-
 class sciaApp(object):
     implements(IIolApp)
     security = ClassSecurityInfo()
@@ -46,21 +43,23 @@ class sciaWsClient(object):
     security = ClassSecurityInfo()
     def __init__(self):
         self.resp_proc = 24
-	path = os.path.dirname(os.path.abspath(__file__))
-        d = loadJsonFile('%s/mapping/scia.json' %path)
-        self.mapping = d.result
+        self.file = 'scia'
+        self.path = os.path.dirname(os.path.abspath(__file__))
+        self.mapping = loadJsonFile("%s/mapping/%s.json" % (self.path,self.file)).result
+        self.elenchi = loadJsonFile("%s/mapping/elenchi.json" % (self.path)).result
 
 
     security.declarePublic('getProcedimento')
     def getProcedimento(self, obj):
         doc = obj.document
+        idoc = IolDocument(doc)
         pr = obj.client.factory.create('procedimento')
         if doc.getItem('data_inizio_lavori_opt','scia_data_inizio_presentazione')=='scia_data_inizio_presentazione':
             pr.tipo = 21100
         else:
             pr.tipo = 21200
         pr.oggetto = doc.getItem('descrizione_intervento','')
-        pr.note = ""
+        pr.note = '\n'.join(idoc.getLabels('tipologia_intervento'))
         pr.protocollo = doc.getItem('numero_protocollo','')
         pr.data_prot = doc.getItem('data_prot',DateTime()).strftime("%d/%m/%Y")
         pr.data_presentazione = doc.getItem('data_presentazione',DateTime().strftime("%d/%m/%Y"))
@@ -110,8 +109,12 @@ class sciaWsClient(object):
             else:
                 soggetto['sesso'] = 'F'
             # Il richiedente è anche proprietario
-            #if r['fisica_titolo'].lower() == 'proprietario':
-            #    soggetto['proprietario'] = 1
+            if 'fisica_titolo' in r.keys():
+                titolo = r['fisica_titolo']
+            else:
+                titolo = ''
+            if titolo.lower() == 'proprietario':
+                soggetto['proprietario'] = 1
             soggetti.append(soggetto)
 
         # Recupero informazioni sul progettista
@@ -271,3 +274,9 @@ class sciaWsClient(object):
             if allegato.files:
                 results.append(allegato)
         return results
+    def getProgetto(self,obj):
+        doc = obj.document
+        progetto = obj.client.factory.create('progetto')
+        dval = doc.getItem('immobile_destinazione', '')
+        progetto.destuso1 = self.elenchi['destuso'][dval]
+        return progetto
