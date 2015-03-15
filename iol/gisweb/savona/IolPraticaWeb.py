@@ -73,6 +73,7 @@ class IolWSPraticaWeb(object):
                 res = client.service.aggiungiAllegato(result["pratica"],allegato)
                 nfiles = len(allegato.files)
                 res = dict(res)
+                import pdb;pdb.set_trace()
                 if(res['success']==1):
                     files_ok += res['cont']
                     files_err += res['err']
