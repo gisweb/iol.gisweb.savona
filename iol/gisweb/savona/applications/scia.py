@@ -271,7 +271,7 @@ class sciaWsClient(object):
                 allegato.documento = k
                 allegato.allegato = 1
                 allegato.files = files_allegati
-            if allegato.files:
+            if allegato.files and k:
                 results.append(allegato)
         return results
     def getProgetto(self,obj):

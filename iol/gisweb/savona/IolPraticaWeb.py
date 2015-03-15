@@ -9,7 +9,7 @@ from zope.component import getGlobalSiteManager
 from iol.gisweb.utils import config
 from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL_REMOVE_PERMISSION
 from zope.component import getUtility,queryUtility
-from .interfaces import IIolPraticaWeb
+from iol.gisweb.savona.interfaces import IIolPraticaWeb
 from suds.client import Client
 from DateTime import DateTime
 
