@@ -15,7 +15,7 @@ class inviaPW(object):
 
     def __call__(self):
         doc = self.aq_parent
-        url = "http://webservice.gisweb.it/wspraticaweb/savona.wsPraticaweb.php?wsdl&test=%d" %random.randint(1,100000)
+        url = "http://10.129.67.229/wspraticaweb/savona.wsPraticaweb.php?wsdl&test=%d" %random.randint(1,100000)
         wsDoc = IolWSPraticaWeb(doc,url)
         res = wsDoc.aggiungi_pratica()
         wftool = getToolByName(doc,'portal_workflow')
