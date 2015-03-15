@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from zope.interface import implements
-from iol.gisweb.savona.interfaces import IIolApp
+from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
 from zope import component
 from AccessControl import ClassSecurityInfo
 import simplejson as json
