@@ -19,7 +19,7 @@ class cilaApp(object):
     implements(IIolApp)
     security = ClassSecurityInfo()
     def __init__(self):
-        self.file = 'scia'
+        self.file = 'cila'
         self.path = os.path.dirname(os.path.abspath(__file__))
 
     #Returns dict with all roles->users/groups defined in Iol application
