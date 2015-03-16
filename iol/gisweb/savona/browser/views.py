@@ -8,6 +8,7 @@ from iol.gisweb.savona.IolApp import IolApp
 from iol.gisweb.savona.IolPraticaWeb import IolWSPraticaWeb
 from iol.gisweb.savona.IolApp import IolApp
 import random
+import simplejson as json
 
 class inviaPW(object):
 
@@ -47,7 +48,6 @@ class wfWizardInfo(object):
         doc = self.aq_parent
         aDoc = IolApp(doc)
         res = aDoc.getWizardInfo()
+        doc.REQUEST.RESPONSE.headers['Content-Type'] = 'application/json'
+        return json.dumps(res)
 
-
-
-        return ''
