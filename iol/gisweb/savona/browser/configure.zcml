@@ -11,4 +11,18 @@
        permission="zope2.View"
      />
 
+    <browser:page
+       name="wfWizardInfo"
+       for="Products.CMFPlomino.interfaces.IPlominoDocument"
+       layer="..interfaces.IIolLayer"
+       class=".views.wfWizardInfo"
+       permission="zope2.View"
+       />
+    <browser:page
+       name="wfWizardInfo"
+       for="Products.CMFPlomino.interfaces.IPlominoForm"
+       layer="..interfaces.IIolLayer"
+       class=".views.wfWizardInfo"
+       permission="zope2.View"
+       />
 </configure>

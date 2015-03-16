@@ -6,6 +6,7 @@ from plone import api
 from zope.component import getUtility
 from iol.gisweb.savona.IolApp import IolApp
 from iol.gisweb.savona.IolPraticaWeb import IolWSPraticaWeb
+from iol.gisweb.savona.IolApp import IolApp
 import random
 
 class inviaPW(object):
@@ -32,3 +33,21 @@ class inviaPW(object):
         doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
         #doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
         return res
+
+
+# Returns Info about Wizard Workflow
+class wfWizardInfo(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.state = api.content.get_state(obj=self.aq_parent)
+
+    def __call__(self):
+        doc = self.aq_parent
+        aDoc = IolApp(doc)
+        res = aDoc.getWizardInfo()
+
+
+
+        return ''

@@ -19,13 +19,16 @@ class sciaApp(object):
     implements(IIolApp)
     security = ClassSecurityInfo()
     def __init__(self):
+        self.file = 'scia'
+        self.path = os.path.dirname(os.path.abspath(__file__))
         pass
 
-    #Returns dict with all roles->users/groups defined in Iol application
+    #Returns new number
     security.declarePublic('NuovoNumeroPratica')
-    def NuovoNumeroPratica(self,obj):
+
+    def NuovoNumeroPratica(self, obj):
         idx = obj.getParentDatabase().getIndex()
-        query = dict(IOL_NUM_FIELD = dict(query=0, range='min'),iol_tipo_app = 'scia' )
+        query = dict(IOL_NUM_FIELD=dict(query=0, range='min'), iol_tipo_app='scia')
 
         brains = idx.dbsearch(query, sortindex=IOL_NUM_FIELD, reverse=1, only_allowed=False)
         if not brains:
@@ -35,12 +38,45 @@ class sciaApp(object):
 
         return nuovoNumero
 
+    # Returns dict with all information about wizard
+    security.declarePublic('getWizardInfo')
+
+    def getWizardInfo(self,obj):
+        doc = obj
+
+        result = dict(
+            actions=[],
+            state="",
+            base_url="%s/content_status_modify?workflow_action=" % (doc.absolute_url()),
+            forms=[]
+        )
+        info = loadJsonFile("%s/wizard_info/%s.json" % (self.path, self.file)).result
+        iDoc = IolDocument(doc)
+        wfInfo = iDoc.wfInfo()
+        if doc.portal_type == 'PlominoForm':
+            result["state"] = info["initial_state"]
+        else:
+            result["state"] = iDoc.wfState()
+        for k, v in info["states"].items():
+            cls_list = list()
+            if not iDoc.isActionSupported(v["action"]):
+                cls_list.append('link-disabled')
+                action = ""
+            else:
+                action = v["action"]
+            if result["state"] == k:
+                cls_list.append("active")
+
+            i = {"label": v["label"], "class": " ".join(cls_list), "action": action}
+            result["forms"].append(i)
+        return result
 
 
 
 class sciaWsClient(object):
     implements(IIolPraticaWeb)
     security = ClassSecurityInfo()
+
     def __init__(self):
         self.resp_proc = 24
         self.file = 'scia'
@@ -48,8 +84,8 @@ class sciaWsClient(object):
         self.mapping = loadJsonFile("%s/mapping/%s.json" % (self.path,self.file)).result
         self.elenchi = loadJsonFile("%s/mapping/elenchi.json" % (self.path)).result
 
-
     security.declarePublic('getProcedimento')
+
     def getProcedimento(self, obj):
         doc = obj.document
         idoc = IolDocument(doc)
@@ -129,7 +165,7 @@ class sciaWsClient(object):
                     soggetto[k] = value.strftime("%d/%m/%Y")
                 else:
                     soggetto[k] = value
-                #soggetto[k] = json.dumps(doc.getItem(v,None), cls=dateEncoder, use_decimal=True)
+
         soggetto['progettista'] = 1
         soggetto['comunicazioni'] = 1
         if soggetto['sesso'] == 'Maschile':
@@ -141,12 +177,9 @@ class sciaWsClient(object):
         if direttore == 'direttoreesecutore':
             soggetto['direttore'] = 1
         soggetti.append(soggetto)
-
-
-
         # Il progettista è anche direttore lavori
-
         # Recupero informazioni sul direttore lavori
+
         if direttore == 'direttore':
             soggetto = obj.client.factory.create('soggetto')
             for i in ruoli:
@@ -274,6 +307,7 @@ class sciaWsClient(object):
             if allegato.files and allegato.documento:
                 results.append(allegato)
         return results
+
     def getProgetto(self,obj):
         doc = obj.document
         progetto = obj.client.factory.create('progetto')
