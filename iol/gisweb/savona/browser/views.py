@@ -48,6 +48,6 @@ class wfWizardInfo(object):
         doc = self.aq_parent
         aDoc = IolApp(doc)
         res = aDoc.getWizardInfo()
-        doc.REQUEST.RESPONSE.headers['Content-Type'] = 'application/json'
+        #doc.REQUEST.RESPONSE.headers['Content-Type'] = 'application/json'
         return json.dumps(res)
 
