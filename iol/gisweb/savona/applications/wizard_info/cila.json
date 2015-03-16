@@ -1,45 +1,45 @@
 {
     "initial_state":"richiedenti",
-    "states":{
-        "richiedenti":{
+    "states":[
+        {
             "action": "vai_richiedenti",
             "label":"Richiedenti",
             "state":"richiedenti"
         },
-        "ubicazione":{
+        {
             "action": "vai_ubicazione",
             "label":"Ubicazione",
             "state":"vai_ubicazione"
         },
-        "dati":{
+        {
             "action": "vai_dati",
             "label":"Dati Richiesta",
             "state":"vai_dati"
         },
-        "altri_soggetti":{
+        {
             "action": "vai_altri_soggetti",
             "label":"Altri Soggetti",
             "state":"altri_soggetti"
         },
-        "sicurezza":{
+        {
             "action": "vai_sicurezza",
             "label":"Sicurezza",
             "state":"sicurezza"
         },
-        "oneri":{
+        {
             "action": "vai_oneri",
             "label":"Oneri",
             "state":"oneri"
         },
-        "allegati":{
+        {
             "action": "vai_allegati",
             "label":"Allegati",
             "state":"allegati"
         },
-        "completata":{
+        {
             "action": "vai_completata",
             "label":"Resoconto Finale",
             "state":"completata"
         }
-    }
+    ]
 }

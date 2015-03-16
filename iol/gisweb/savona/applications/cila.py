@@ -55,14 +55,14 @@ class cilaApp(object):
             result["state"] = info["initial_state"]
         else:
             result["state"] = iDoc.wfState()
-        for k, v in info["states"].items():
+        for v in info["states"]:
             cls_list = list()
             if not iDoc.isActionSupported(v["action"]):
                 cls_list.append('link-disabled')
                 action = ""
             else:
                 action = v["action"]
-            if result["state"] == k:
+            if result["state"] == v["state"]:
                 cls_list.append("active")
 
             i = {"label": v["label"], "class": " ".join(cls_list), "action": action}
