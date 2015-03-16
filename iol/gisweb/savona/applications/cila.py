@@ -19,9 +19,9 @@ class cilaApp(object):
     implements(IIolApp)
     security = ClassSecurityInfo()
     def __init__(self):
-        pass
-    def __call__(self, *args, **kwargs):
-        pass
+        self.file = 'scia'
+        self.path = os.path.dirname(os.path.abspath(__file__))
+
     #Returns dict with all roles->users/groups defined in Iol application
     security.declarePublic('NuovoNumeroPratica')
     def NuovoNumeroPratica(self,obj):

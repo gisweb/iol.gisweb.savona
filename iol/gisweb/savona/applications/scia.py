@@ -21,7 +21,6 @@ class sciaApp(object):
     def __init__(self):
         self.file = 'scia'
         self.path = os.path.dirname(os.path.abspath(__file__))
-        pass
 
     #Returns new number
     security.declarePublic('NuovoNumeroPratica')
