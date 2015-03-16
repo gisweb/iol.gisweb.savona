@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
+import os
 from zope.interface import implements
+
 from iol.gisweb.savona.interfaces import IIolApp,IIolPraticaWeb
-from zope import component
+
 from AccessControl import ClassSecurityInfo
 import simplejson as json
-from plone import api
 
-import sqlalchemy as sql
-import sqlalchemy.orm as orm
+from DateTime import DateTime
+
+from base64 import b64encode
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
-
-from .praticaweb import getConvData,genericTable
-from plomino.replication.pgReplication import getPlominoValues
+from iol.gisweb.utils.IolDocument import IolDocument
+from iol.gisweb.utils import loadJsonFile,dateEncoder
 
 class cilaApp(object):
     implements(IIolApp)
