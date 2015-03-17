@@ -9,12 +9,12 @@
         {
             "action": "vai_ubicazione",
             "label":"Ubicazione",
-            "state":"vai_ubicazione"
+            "state":"ubicazione"
         },
         {
             "action": "vai_dati",
             "label":"Dati Richiesta",
-            "state":"vai_dati"
+            "state":"dati"
         },
         {
             "action": "vai_altri_soggetti",
