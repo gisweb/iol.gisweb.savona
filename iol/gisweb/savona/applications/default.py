@@ -88,8 +88,6 @@ class defaultApp(object):
         if db.getIndexInPortal():
             db.portal_catalog.catalog_object(obj, "/".join(db.getPhysicalPath() + (obj.getId(),)))
 
-
-
 class defaultWsClient(object):
     implements(IIolPraticaWeb)
     security = ClassSecurityInfo()

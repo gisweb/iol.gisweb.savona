@@ -2,6 +2,7 @@
 from zope.interface import Interface, implements, Attribute
 from zope.component import adapts
 from plone import api
+import os
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFPlomino.interfaces import IPlominoDocument, IPlominoForm
@@ -11,6 +12,7 @@ from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL
 from zope.component import getUtility,queryUtility
 from .interfaces import IIolApp
 from iol.gisweb.utils.IolDocument import IolDocument
+from iol.gisweb.utils import loadJsonFile,dateEncoder
 
 
 class IolApp(object):
@@ -24,6 +26,7 @@ class IolApp(object):
         self.document = obj
         iDoc = IolDocument(obj)
         self.tipo_app = iDoc.getIolApp()
+        self.path = os.path.dirname(os.path.abspath(__file__))
 
     security.declarePublic('NuovoNumeroPratica')
     def NuovoNumeroPratica(self):
@@ -73,8 +76,38 @@ class IolApp(object):
     security.declarePublic('getWizardInfo')
 
     def getWizardInfo(self):
-        utils = queryUtility(IIolApp,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
-        if not 'getWizardInfo' in dir(utils):
-            return dict()
-        return utils.getWizardInfo(self.document)
+        doc = self.document
+        # Inizializzo il risultato
+        result = dict(
+            actions=[],
+            state="",
+            base_url="%s/content_status_modify?workflow_action=" % (doc.absolute_url()),
+            forms=[]
+        )
+        #Istanzio l'oggetto IolDocument
+
+        iDoc = IolDocument(doc)
+        info = loadJsonFile("%s/applications/wizard_info/%s.json" % (self.path, self.tipo_app)).result
+
+        wfInfo = iDoc.wfInfo()
+        if doc.portal_type == 'PlominoForm':
+            result["state"] = info["initial_state"]
+            result["actions"] = info["initial_actions"]
+        else:
+            result["state"] = wfInfo["wf_state"]
+            result["actions"] = wfInfo["wf_actions"]
+        for v in info["states"]:
+            cls_list = list()
+            if not iDoc.isActionSupported(v["action"]):
+                cls_list.append('link-disabled')
+                action = ""
+            else:
+                action = v["action"]
+            if result["state"] == v["state"]:
+                cls_list.append("active")
+
+            i = {"label": v["label"], "class": " ".join(cls_list), "action": action}
+            result["forms"].append(i)
+        return result
+
 InitializeClass(IolApp)

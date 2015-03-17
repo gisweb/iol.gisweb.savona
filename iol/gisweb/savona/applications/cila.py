@@ -53,8 +53,10 @@ class cilaApp(object):
         wfInfo = iDoc.wfInfo()
         if doc.portal_type == 'PlominoForm':
             result["state"] = info["initial_state"]
+            result["actions"] = info["initial_actions"]
         else:
-            result["state"] = iDoc.wfState()
+            result["state"] = wfInfo["wf_state"]
+            result["actions"] = wfInfo["wf_actions"]
         for v in info["states"]:
             cls_list = list()
             if not iDoc.isActionSupported(v["action"]):

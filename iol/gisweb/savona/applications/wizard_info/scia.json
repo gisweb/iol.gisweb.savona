@@ -1,5 +1,6 @@
 {
     "initial_state":"richiedenti",
+    "initial_actions":[],
         "states":[
         {
             "action": "vai_richiedenti",
