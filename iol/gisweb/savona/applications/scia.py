@@ -37,40 +37,6 @@ class sciaApp(object):
 
         return nuovoNumero
 
-    # Returns dict with all information about wizard
-    security.declarePublic('getWizardInfo')
-
-    def getWizardInfo(self,obj):
-        doc = obj
-
-        result = dict(
-            actions=[],
-            state="",
-            base_url="%s/content_status_modify?workflow_action=" % (doc.absolute_url()),
-            forms=[]
-        )
-        info = loadJsonFile("%s/wizard_info/%s.json" % (self.path, self.file)).result
-        iDoc = IolDocument(doc)
-        wfInfo = iDoc.wfInfo()
-        if doc.portal_type == 'PlominoForm':
-            result["state"] = info["initial_state"]
-        else:
-            result["state"] = iDoc.wfState()
-        for v in info["states"]:
-            cls_list = list()
-            if not iDoc.isActionSupported(v["action"]):
-                cls_list.append('link-disabled')
-                action = ""
-            else:
-                action = v["action"]
-            if result["state"] == v["state"]:
-                cls_list.append("active")
-
-            i = {"label": v["label"], "class": " ".join(cls_list), "action": action}
-            result["forms"].append(i)
-        return result
-
-
 
 class sciaWsClient(object):
     implements(IIolPraticaWeb)
