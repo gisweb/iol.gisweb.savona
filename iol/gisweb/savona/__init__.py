@@ -7,7 +7,7 @@ from iol.gisweb.utils import config
 from .interfaces import IIolApp, IIolPraticaWeb
 from .applications.default import defaultApp, defaultWsClient
 from applications.scia import sciaApp, sciaWsClient
-from applications.suapcila import cilaApp, cilaWsClient
+from applications.cila import cilaApp, cilaWsClient
 from applications.suapcila import suapcilaApp, suapcilaWsClient
 
 allow_module("iol.gisweb.savona.IolApp")
