@@ -24,12 +24,12 @@
       description="Installs the iol.utils package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <genericsetup:importStep
+  <!--<genericsetup:importStep
       name="iol.gisweb.savona"
       title="Initialize Package"
       description=""
       handler="iol.gisweb.savona.setuphandlers.initPackage"
-      />
+      />-->
   <!-- -*- extra stuff goes here -*- -->
 
     <class class="Products.CMFPlomino.PlominoDocument.PlominoDocument">
