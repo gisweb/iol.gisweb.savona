@@ -23,6 +23,7 @@ class inviaPW(object):
         res = wsDoc.aggiungi_pratica()
         res = dict(res)
         if res["success"]:
+            doc.setItem("numero_pratica",res["numero_pratica"])
             wftool = getToolByName(doc, 'portal_workflow')
             wftool.doActionFor(doc, 'i1_protocolla')
             message = u"La domanda è stata inviata correttamente al Servizio Edilizia con Numero di pratica %s" % res["numero_pratica"]
