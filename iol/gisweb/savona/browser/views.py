@@ -78,3 +78,17 @@ class wfWizardInfo(object):
         #doc.REQUEST.RESPONSE.headers['Content-Type'] = 'application/json'
         return json.dumps(res)
 
+class infoProcedimento(object):
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+
+    def __call__(self):
+        doc = self.aq_parent
+        url = "http://10.129.67.229/wspraticaweb/savona.wsPraticaweb.php?wsdl&test=%d" %random.randint(1,100000)
+        wsDoc = IolWSPraticaWeb(doc,url)
+        res = wsDoc.infoProcedimento()
+        doc.REQUEST.RESPONSE.headers['Content-Type'] = 'application/json'
+
+        return json.dumps(res)

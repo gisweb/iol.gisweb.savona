@@ -7,6 +7,7 @@ from App.class_init import InitializeClass
 from Products.CMFPlomino.interfaces import IPlominoDocument, IPlominoForm
 from zope.component import getGlobalSiteManager
 from iol.gisweb.utils import config
+from iol.gisweb.utils.IolDocument import IolDocument
 from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL_REMOVE_PERMISSION
 from zope.component import getUtility,queryUtility
 from iol.gisweb.savona.interfaces import IIolPraticaWeb
@@ -116,3 +117,18 @@ class IolWSPraticaWeb(object):
             #if files_ok:
             #    result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
+
+    def infoProcedimento(self):
+        client = self.client
+        doc = self.document
+        idoc = IolDocument(doc)
+        procedimento = client.service.trovaProcedimento(doc.getItem('numero_pratica'))
+        result = dict(procedimento)
+        infoDoc = idoc.serializeDoc()
+        if result["id"]:
+            res = client.service.trovaProcedimento(result["id"])
+            if res["success"]:
+                r = dict(res["result"])
+
+            infoDoc.update(r)
+        return infoDoc
