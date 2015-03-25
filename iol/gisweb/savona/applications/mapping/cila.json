@@ -337,7 +337,10 @@
         "501": [
             "allegato_ditta_esecutrice"
         ],
-        "502": [],
+        "502": [
+             "allegato_copia_asl",
+             "allegato_autocert_committente"
+        ],
         "503": [
             "allegato_relazione_tecnica_progettista"
         ],

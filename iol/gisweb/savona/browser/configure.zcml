@@ -11,6 +11,14 @@
        permission="zope2.View"
      />
 
+     <browser:page
+       name="inviaInizioComunicazionePW"
+       for="Products.CMFPlomino.interfaces.IPlominoDocument"
+       layer="..interfaces.IIolAppsLayer"
+       class=".views.inviaInizioComunicazionePW"
+       permission="zope2.View"
+     />
+
     <browser:page
        name="wfWizardInfo"
        for="Products.CMFPlomino.interfaces.IPlominoDocument"

@@ -279,3 +279,19 @@ class sciaWsClient(object):
         dval = doc.getItem('immobile_destinazione', '')
         progetto.destuso1 = self.elenchi['destuso'][dval]
         return progetto
+
+    def getComunicazioneInizioLavori(self,obj):
+        doc = obj.document
+        lavori = obj.client.factory('lavori')
+        doc.getItem('data_inizio_lavori','')
+        lavori.il = doc.getItem('data_inizio_lavori')
+        lavori.note = doc.getItem('note','')
+        return lavori
+
+    def getComunicazioneFineLavori(self,obj):
+        doc = obj.document
+        lavori = obj.client.factory('lavori')
+        doc.getItem('data_fine_lavori','')
+        lavori.fl = doc.getItem('data_fine_lavori')
+        lavori.note = doc.getItem('note','')
+        return lavori    

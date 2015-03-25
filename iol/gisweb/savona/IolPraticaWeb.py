@@ -25,7 +25,39 @@ class IolWSPraticaWeb(object):
         self.service = service
         self.tipo_app = self.document.getItem(config.APP_FIELD,config.APP_FIELD_DEFAULT_VALUE)
         self.client = Client(service)
+   
+    def aggiungi_inizio_lavori(self):
+        client = self.client
+        doc = self.document
+        
+        utils = queryUtility(IIolPraticaWeb, name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'getComunicazioneInizioLavori' in dir(utils):
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
 
+        lavori = utils.getComunicazioneInizioLavori(self)
+
+        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'getAllegati' in dir(utils):
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
+
+        allegati = utils.getAllegati(self)
+        procedimento = client.service.trovaProcedimento(doc.getItem('numero_pratica'))
+        result = dict(procedimento)
+        if result['id'] != None:
+            pratica = result['id'] 
+            client.service.comunicazioneInizioLavori(pratica,lavori)
+
+            # aggiunge allegati per ciascuna pratica        
+            files_ok = files_err = 0
+            for allegato in allegati:
+                res = client.service.aggiungiAllegato(pratica,allegato)
+                nfiles = len(allegato.files)
+                res = dict(res)
+                
+        return result
+
+
+ 
     def aggiungi_pratica(self):
         client = self.client
         doc = self.document
