@@ -89,6 +89,4 @@ class infoProcedimento(object):
         url = "http://10.129.67.229/wspraticaweb/savona.wsPraticaweb.php?wsdl&test=%d" %random.randint(1,100000)
         wsDoc = IolWSPraticaWeb(doc,url)
         res = wsDoc.infoProcedimento()
-        doc.REQUEST.RESPONSE.headers['Content-Type'] = 'application/json'
-
         return json.dumps(res)
