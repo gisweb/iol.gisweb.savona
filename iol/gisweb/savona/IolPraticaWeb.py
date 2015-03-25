@@ -124,9 +124,9 @@ class IolWSPraticaWeb(object):
         idoc = IolDocument(doc)
         procedimento = client.service.trovaProcedimento(doc.getItem('numero_pratica'))
         result = dict(procedimento)
-        infoDoc = idoc.serializeDoc()
+	infoDoc = idoc.serializeDoc()
         if result["id"]:
-            res = client.service.trovaProcedimento(result["id"])
+            res = dict(client.service.infoProcedimento(result["id"]))
             if res["success"]:
                 r = dict(res["result"])
 
