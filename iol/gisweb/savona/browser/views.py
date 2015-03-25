@@ -9,6 +9,7 @@ from iol.gisweb.savona.IolPraticaWeb import IolWSPraticaWeb
 from iol.gisweb.savona.IolApp import IolApp
 import random
 import simplejson as json
+import DateTime
 
 class inviaPW(object):
 
@@ -89,4 +90,4 @@ class infoProcedimento(object):
         url = "http://10.129.67.229/wspraticaweb/savona.wsPraticaweb.php?wsdl&test=%d" %random.randint(1,100000)
         wsDoc = IolWSPraticaWeb(doc,url)
         res = wsDoc.infoProcedimento()
-        return json.dumps(res)
+        return json.dumps(res,default=DateTime.DateTime.ISO,use_decimal=True)
