@@ -129,7 +129,7 @@ class IolWSPraticaWeb(object):
             res = dict(client.service.infoPratica(result["id"]))
             if res["success"]:
                 r = dict(res["result"])
-                for k,v in r["procedimento"].items():
+                for k,v in r.items():
                     infoDoc[k] = v
 
             res = dict(client.service.infoSoggetto(result["id"],tipo_sogg))
