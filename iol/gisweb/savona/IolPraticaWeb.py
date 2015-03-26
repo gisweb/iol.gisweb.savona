@@ -127,21 +127,24 @@ class IolWSPraticaWeb(object):
         infoDoc = idoc.serializeDoc()
         if result["id"]:
             res = dict(client.service.infoPratica(result["id"]))
-            if res["success"]:
+            
+	    if res["success"]:
                 r = dict(res["result"])
                 for k,v in r.items():
                     infoDoc[k] = v
 
             res = dict(client.service.infoSoggetto(result["id"],tipo_sogg))
-            if res["success"]:
-                r = dict(res["result"])
+            #import pdb;pdb.set_trace();
+	    if res["success"]:
+                r = list(res["result"])
                 infoDoc["soggetti"] = list()
                 for v in r:
                     infoDoc["soggetti"].append(dict(v))
-
+            
             res = dict(client.service.infoIndirizzi(result["id"]))
+            #import pdb;pdb.set_trace()
             if res["success"]:
-                r = dict(res["result"])
+                r = list(res["result"])
                 infoDoc["indirizzi"] = list()
                 for v in r:
                     infoDoc["indirizzi"].append(dict(v))
