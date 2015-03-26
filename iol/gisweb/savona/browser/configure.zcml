@@ -33,11 +33,4 @@
        class=".views.wfWizardInfo"
        permission="zope2.View"
        />
-    <browser:page
-       name="infoProcedimento"
-       for="Products.CMFPlomino.interfaces.IPlominoDocument"
-       layer="..interfaces.IIolAppsLayer"
-       class=".views.infoProcedimento"
-       permission="zope2.View"
-       />
 </configure>
