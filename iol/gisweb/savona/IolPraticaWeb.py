@@ -118,7 +118,7 @@ class IolWSPraticaWeb(object):
             #    result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
     security.declarePublic('infoSoggetto')
-    def infoSoggetto(self,tipo):
+    def infoProcedimento(self,tipo_sogg):
         client = self.client
         doc = self.document
         idoc = IolDocument(doc)
@@ -126,14 +126,25 @@ class IolWSPraticaWeb(object):
         result = dict(procedimento)
         infoDoc = idoc.serializeDoc()
         if result["id"]:
-            res = dict(client.service.infoSoggetto(result["id"],tipo))
+            res = dict(client.service.infoPratica(result["id"]))
             if res["success"]:
                 r = dict(res["result"])
-                for k,v in r.items():
+                for k,v in r["procedimento"].items():
                     infoDoc[k] = v
+
+            res = dict(client.service.infoSoggetto(result["id"],tipo_sogg))
+            if res["success"]:
+                r = dict(res["result"])
                 infoDoc["soggetti"] = list()
-                for v in r["soggetti"]:
+                for v in r:
                     infoDoc["soggetti"].append(dict(v))
+
+            res = dict(client.service.infoIndirizzi(result["id"]))
+            if res["success"]:
+                r = dict(res["result"])
+                infoDoc["indirizzi"] = list()
+                for v in r:
+                    infoDoc["indirizzi"].append(dict(v))
 
         return infoDoc
 
