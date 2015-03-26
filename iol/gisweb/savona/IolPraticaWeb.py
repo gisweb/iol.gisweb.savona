@@ -117,7 +117,7 @@ class IolWSPraticaWeb(object):
             #if files_ok:
             #    result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
-    security.declarePublic('infoSoggetto')
+    security.declarePublic('infoProcedimento')
     def infoProcedimento(self,tipo_sogg):
         client = self.client
         doc = self.document
