@@ -133,7 +133,7 @@ class IolWSPraticaWeb(object):
                     infoDoc[k] = v
                 infoDoc["soggetti"] = list()
                 for v in r["soggetti"]:
-                    infoDoc.append(dict(v))
+                    infoDoc["soggetti"].append(dict(v))
 
         return infoDoc
 
