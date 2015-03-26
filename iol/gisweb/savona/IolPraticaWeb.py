@@ -57,7 +57,35 @@ class IolWSPraticaWeb(object):
                 
         return result
 
+    def aggiungi_fine_lavori(self):
+        client = self.client
+        doc = self.document
 
+        utils = queryUtility(IIolPraticaWeb, name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'getComunicazioneFineLavori' in dir(utils):
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
+
+        lavori = utils.getComunicazioneFineLavori(self)
+
+        utils = queryUtility(IIolPraticaWeb,name=self.tipo_app, default=config.APP_FIELD_DEFAULT_VALUE)
+        if not 'getAllegati' in dir(utils):
+            utils = getUtility(IIolPraticaWeb, config.APP_FIELD_DEFAULT_VALUE)
+
+        allegati = utils.getAllegati(self)
+        procedimento = client.service.trovaProcedimento(doc.getItem('numero_pratica'))
+        result = dict(procedimento)
+        if result['id'] != None:
+            pratica = result['id']
+            client.service.comunicazioneFineLavori(pratica,lavori)
+
+            # aggiunge allegati per ciascuna pratica
+            files_ok = files_err = 0
+            for allegato in allegati:
+                res = client.service.aggiungiAllegato(pratica,allegato)
+                nfiles = len(allegato.files)
+                res = dict(res)
+
+        return result
  
     def aggiungi_pratica(self):
         client = self.client
