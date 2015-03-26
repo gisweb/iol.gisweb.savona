@@ -118,7 +118,7 @@ class IolWSPraticaWeb(object):
             #    result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
 
-    def infoSoggetto(self):
+    def infoSoggetto(self,tipo):
         client = self.client
         doc = self.document
         idoc = IolDocument(doc)
