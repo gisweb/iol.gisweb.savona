@@ -119,20 +119,6 @@ class IolWSPraticaWeb(object):
         return result
     security.declarePublic('infoSoggetto')
     def infoSoggetto(self,tipo):
-        client = self.client
-        doc = self.document
-        idoc = IolDocument(doc)
-        procedimento = client.service.trovaProcedimento(doc.getItem('numero_pratica'))
-        result = dict(procedimento)
-        infoDoc = idoc.serializeDoc()
-        if result["id"]:
-            res = dict(client.service.infoSoggetto(result["id"],tipo))
-            if res["success"]:
-                r = dict(res["result"])
-                for k,v in r.items():
-                    infoDoc[k] = v
-                infoDoc["soggetti"] = list()
-                for v in r["soggetti"]:
-                    infoDoc.append(dict(v))
 
-        return infoDoc
+        return 1
+
