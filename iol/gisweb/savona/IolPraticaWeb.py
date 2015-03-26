@@ -118,7 +118,7 @@ class IolWSPraticaWeb(object):
             #    result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
 
-    def infoProcedimento(self):
+    def infoSoggetto(self):
         client = self.client
         doc = self.document
         idoc = IolDocument(doc)
@@ -126,13 +126,13 @@ class IolWSPraticaWeb(object):
         result = dict(procedimento)
         infoDoc = idoc.serializeDoc()
         if result["id"]:
-            res = dict(client.service.infoProcedimento(result["id"]))
+            res = dict(client.service.infoSoggetto(result["id"],tipo))
             if res["success"]:
                 r = dict(res["result"])
-                for k,v in dict(r["procedimento"]).items():
+                for k,v in r.items():
                     infoDoc[k] = v
-                for k in ["richiedenti", "progettisti","esecutori","direttore_lavori","indirizzi"]:
-                    infoDoc[k]=list()
-                    for v in r[k]:
-                        infoDoc[k].append(dict(v))
+                infoDoc["soggetti"] = list()
+                for v in r["soggetti"]:
+                    infoDoc.append(dict(v))
+
         return infoDoc
