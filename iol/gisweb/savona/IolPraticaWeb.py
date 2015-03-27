@@ -145,6 +145,15 @@ class IolWSPraticaWeb(object):
             #if files_ok:
             #    result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
+
+    security.declarePublic('trovaProcedimento')
+    def trovaProcedimento(self):
+        client = self.client
+        doc = self.document
+        procedimento = client.service.trovaProcedimento(doc.getItem('numero_pratica'))
+        result = dict(procedimento)
+        return result
+
     security.declarePublic('infoProcedimento')
     def infoProcedimento(self, tipo_sogg):
         client = self.client
