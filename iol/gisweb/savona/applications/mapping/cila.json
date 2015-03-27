@@ -332,7 +332,7 @@
     },
     "allegato": {
         "500": [
-            "cila_ricevuta_versamento"
+            "scia_ricevuta_versamento"
         ],
         "501": [
             "allegato_ditta_esecutrice"
@@ -357,7 +357,8 @@
             "allegati_elab_cartografici"
         ],
         "509": [
-            "allegati_elab_grafici"
+            "allegati_elab_grafici",
+            "allegato_stato_di_fatto"
         ],
         "510": [
             "allegati_visura_plan_catastale"
@@ -396,7 +397,8 @@
             "allegati_rel_idraulica"
         ],
         "522": [
-            "allegati_computo_superf"
+            "allegati_computo_superf",
+            "allegato_calcolo_preventivo"
         ],
         "523": [
             "allegati_computo_parcheggi"
@@ -442,8 +444,12 @@
             "firma_digitale_impresa_ci",
             "firma_digitale_impresa_procura",
             "firma_digitale_ci",
-            "firma_digitale_procura"
+            "firma_digitale_procura",
+            "ci_progettista",
+            "allegato_documento_titolare",
+            "allegato_documento_compropr"
         ],
-      "532":["documenti_autorizzazione"]
+      "532":["documenti_autorizzazione"],
+      "533":["allegato_versam_oblazione"]
     }
 }

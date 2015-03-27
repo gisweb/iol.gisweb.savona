@@ -163,8 +163,8 @@ class IolWSPraticaWeb(object):
 
             res = dict(client.service.infoSoggetto(result["id"],tipo_sogg))
             #import pdb;pdb.set_trace();
-	    if res["success"]:
-                r = list(res["result"])
+        if res["success"]:
+            r = list(res["result"])
                 infoDoc["soggetti"] = list()
                 for v in r:
                     infoDoc["soggetti"].append(dict(v))
