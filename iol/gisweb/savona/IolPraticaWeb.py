@@ -146,28 +146,29 @@ class IolWSPraticaWeb(object):
             #    result['messages'].append("Sono stati trasferiti correttamente %d allegati" % files_ok)
         return result
     security.declarePublic('infoProcedimento')
-    def infoProcedimento(self,tipo_sogg):
+    def infoProcedimento(self, tipo_sogg):
         client = self.client
         doc = self.document
         idoc = IolDocument(doc)
         procedimento = client.service.trovaProcedimento(doc.getItem('numero_pratica'))
         result = dict(procedimento)
         infoDoc = idoc.serializeDoc()
+        res = dict()
         if result["id"]:
             res = dict(client.service.infoPratica(result["id"]))
             
-	    if res["success"]:
-                r = dict(res["result"])
-                for k,v in r.items():
-                    infoDoc[k] = v
+        if res["success"]:
+            r = dict(res["result"])
+            for k, v in r.items():
+                infoDoc[k] = v
 
             res = dict(client.service.infoSoggetto(result["id"],tipo_sogg))
-            #import pdb;pdb.set_trace();
+            # import pdb;pdb.set_trace();
         if res["success"]:
             r = list(res["result"])
-                infoDoc["soggetti"] = list()
-                for v in r:
-                    infoDoc["soggetti"].append(dict(v))
+            infoDoc["soggetti"] = list()
+            for v in r:
+                infoDoc["soggetti"].append(dict(v))
             
             res = dict(client.service.infoIndirizzi(result["id"]))
             #import pdb;pdb.set_trace()
