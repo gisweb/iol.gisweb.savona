@@ -43,3 +43,5 @@ gsm.registerUtility(app, IIolPraticaWeb, 'cila')
 app = suapcilaWsClient()
 gsm.registerUtility(app, IIolPraticaWeb, 'suapcila')
 
+app = utentiApp()
+gsm.registerUtility(app, IIolApp, 'utenti')

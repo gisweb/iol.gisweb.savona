@@ -57,6 +57,16 @@ class IolApp(object):
         if not 'createPdf' in dir(utils):
             utils = getUtility(IIolApp,config.APP_FIELD_DEFAULT_VALUE)        
         return utils.createPdf(self.document,filename,itemname,overwrite)
+    
+    security.declarePublic('getConvData')
+    def getConvData(self,json_data):
+        utils = getUtility(IIolApp,'default')
+        return utils.getConvData(json_data)
+
+    security.declarePublic('sendThisMail')
+    def sendThisMail(self,ObjectId,sender='',debug=0,To='',password=''):               
+        utils = getUtility(IIolApp,self.tipo_app)        
+        return utils.sendThisMail(self.document,ObjectId,sender,debug,To,password)      
 
     security.declarePublic('updateStatus')
     def updateStatus(self):

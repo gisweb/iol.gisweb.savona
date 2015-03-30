@@ -8,8 +8,8 @@ from gisweb.iol.permissions import IOL_READ_PERMISSION, IOL_EDIT_PERMISSION, IOL
 
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
 from Products.CMFCore.utils import getToolByName
-
-
+import os
+import simplejson as json
 
 class defaultApp(object):
     implements(IIolApp)
@@ -54,6 +54,24 @@ class defaultApp(object):
                 self._assignOwner(doc,user)
                 cont += 1
         return cont
+
+    def getConvData(self,json_file):
+        fName = "%s/mapping/%s.json" %(os.path.dirname(os.path.abspath(__file__)),json_file)
+        
+        if os.path.isfile(fName):
+            json_data=open(fName)
+
+            try:
+                data = json.load(json_data)
+
+            except ValueError, e:
+                data = str(e)
+                json_data.close()
+               
+        else:
+            return fName
+            data = dict()
+        return data    
 
     security.declarePublic('createPdf')
     def createPdf(selfself,obj,filename,itemname,overwrite):

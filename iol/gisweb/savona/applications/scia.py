@@ -14,6 +14,7 @@ from base64 import b64encode
 from iol.gisweb.utils.config import USER_CREDITABLE_FIELD,USER_UNIQUE_FIELD,IOL_APPS_FIELD,STATUS_FIELD,IOL_NUM_FIELD
 from iol.gisweb.utils.IolDocument import IolDocument
 from iol.gisweb.utils import loadJsonFile,dateEncoder
+from iol.gisweb.savona.IolApp import IolApp
 
 class sciaApp(object):
     implements(IIolApp)
@@ -37,6 +38,44 @@ class sciaApp(object):
 
         return nuovoNumero
 
+    security.declarePublic('sendThisMail')
+    def sendThisMail(self,obj,ObjectId, sender='', debug=0,To='',password=''):        
+        doc = obj
+
+        db = doc.getParentDatabase()
+        iDoc = IolApp(doc)
+        diz_mail = iDoc.getConvData('mail_%s' %('scia'))
+        
+        msg_info = dict(numero_pratica = doc.getItem('numero_pratica'),titolo = doc.Title(),
+        now = DateTime().strftime('%d/%m/%Y'),istruttore = doc.getItem('istruttore'),numero_protocollo = doc.getItem('numero_protocollo'),
+        link_pratica = doc.absolute_url(), data_pratica = doc.getItem('data_pratica'), istruttoria_motivo_sospensione = doc.getItem('istruttoria_motivo_sospensione'))
+        args = dict(To = doc.getItem('fisica_email') if To == '' else To,From = sender,as_script = debug)
+        custom_args = dict()
+        
+        if not args['To']:
+
+            plone_tools = getToolByName(doc.getParentDatabase().aq_inner, 'plone_utils')
+            msg = ''''ATTENZIONE! Non e' stato possibile inviare la mail perche' non esiste nessun destinatario'''
+            plone_tools.addPortalMessage(msg, request=doc.REQUEST)
+            
+        attach_list = doc.getFilenames()
+        
+        if ObjectId in diz_mail.keys():
+            
+            if diz_mail[ObjectId].get('attach') != "":
+                msg_info.update(dict(documenti_autorizzazione = doc.getItem('documenti_autorizzazione')))                 
+                msg_info.update(dict(attach = diz_mail[ObjectId].get('attach')))
+
+                custom_args = dict(Object = diz_mail[ObjectId].get('object') % msg_info,
+                msg = doc.mime_file(file = '' if not msg_info.get('attach') in attach_list else doc[msg_info['attach']], text = diz_mail[ObjectId].get('text') % msg_info, nomefile = diz_mail[ObjectId].get('nomefile')) % msg_info)
+            else:                
+                custom_args = dict(Object = diz_mail[ObjectId].get('object') % msg_info,
+                msg = diz_mail[ObjectId].get('text') % msg_info)      
+        if custom_args:            
+            args.update(custom_args)
+            
+            return IolDocument(doc).sendMail(**args)
+        
 
 class sciaWsClient(object):
     implements(IIolPraticaWeb)
@@ -294,4 +333,5 @@ class sciaWsClient(object):
         doc.getItem('data_fine_lavori','')
         lavori.fl = doc.getItem('data_fine_lavori')
         lavori.note = doc.getItem('note','')
-        return lavori    
+        return lavori
+
