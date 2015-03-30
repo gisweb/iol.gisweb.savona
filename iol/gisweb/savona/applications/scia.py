@@ -47,9 +47,9 @@ class sciaApp(object):
         diz_mail = iDoc.getConvData('mail_%s' %('scia'))
         
         msg_info = dict(numero_pratica = doc.getItem('numero_pratica'),titolo = doc.Title(),
-        now = DateTime().strftime('%d/%m/%Y'),istruttore = doc.getItem('istruttore'),numero_protocollo = doc.getItem('numero_protocollo'),
-        link_pratica = doc.absolute_url(), data_pratica = doc.getItem('data_pratica'), istruttoria_motivo_sospensione = doc.getItem('istruttoria_motivo_sospensione'))
-        args = dict(To = doc.getItem('fisica_email') if To == '' else To,From = sender,as_script = debug)
+        now = DateTime().strftime('%d/%m/%Y'),istruttore = doc.getItem('istruttore'),numero_protocollo = doc.getItem('numero_protocollo'),data_protocollo = doc.getItem('data_protocollo'),
+        link_pratica = doc.absolute_url(), data_pratica = doc.getItem('data_pratica'), istruttoria_motivo_sospensione = doc.getItem('istruttoria_motivo_sospensione'), nome_app = doc.getItem('iol_tipo_app'),richiedente_nome = doc.getItem('fisica_nome'),richiedente_cognome = doc.getItem('fisica_cognome'))
+        args = dict(To = doc.getItem('progettista_pec') if To == '' else To,From = sender,as_script = debug)
         custom_args = dict()
         
         if not args['To']:
@@ -70,7 +70,8 @@ class sciaApp(object):
                 msg = doc.mime_file(file = '' if not msg_info.get('attach') in attach_list else doc[msg_info['attach']], text = diz_mail[ObjectId].get('text') % msg_info, nomefile = diz_mail[ObjectId].get('nomefile')) % msg_info)
             else:                
                 custom_args = dict(Object = diz_mail[ObjectId].get('object') % msg_info,
-                msg = diz_mail[ObjectId].get('text') % msg_info)      
+                msg = diz_mail[ObjectId].get('text') % msg_info)
+
         if custom_args:            
             args.update(custom_args)
             
