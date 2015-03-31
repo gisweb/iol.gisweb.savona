@@ -73,7 +73,8 @@ class inviaPW(object):
                 message = u"Si sono verificati alcuni errori durante l'invio della pratica"
                 t = 'error'
         api.portal.show_message(message=message, type=t, request=doc.REQUEST)
-        doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
+	port = api.portal.get() 
+        doc.REQUEST.RESPONSE.redirect(port['cruscotto-praticaweb'].absolute_url())
         #doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
 
 
