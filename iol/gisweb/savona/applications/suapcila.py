@@ -94,7 +94,7 @@ class suapcilaWsClient(object):
         doc = obj.document
         idoc = IolDocument(doc)
         pr = obj.client.factory.create('procedimento')
-        pr.tipo = 21300
+        pr.tipo = 21350
         pr.oggetto = doc.getItem('descrizione_intervento','')
         pr.note = '\n'.join(idoc.getLabels('tipologia_intervento'))
         pr.protocollo = doc.getItem('numero_protocollo','')
