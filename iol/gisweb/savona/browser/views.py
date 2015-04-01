@@ -74,7 +74,7 @@ class inviaPW(object):
                 t = 'error'
         api.portal.show_message(message=message, type=t, request=doc.REQUEST)
 	port = api.portal.get() 
-        doc.REQUEST.RESPONSE.redirect(port['cruscotto-praticaweb'].absolute_url())
+        doc.REQUEST.RESPONSE.redirect(port['scrivania-protocolli'].absolute_url())
         #doc.REQUEST.RESPONSE.redirect(doc.absolute_url())
 
 

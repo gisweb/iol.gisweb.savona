@@ -447,7 +447,9 @@
             "allegato_documento_titolare",
             "allegato_documento_compropr"
         ],
-      "532":["documenti_autorizzazione"],
-      "533":["allegato_versam_oblazione"]
+      "532":["comunicazione_digitale"],
+      "533":["allegato_versam_oblazione"],
+      "534":["asseverata_digitale"],
+      "535":["allegati_altra_doc"]
     }
 }

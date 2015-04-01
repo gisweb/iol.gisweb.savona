@@ -83,7 +83,7 @@ class cilaWsClient(object):
     security = ClassSecurityInfo()
 
     def __init__(self):
-        self.resp_proc = 24
+        self.resp_proc = 21
         self.file = 'cila'
         self.path = os.path.dirname(os.path.abspath(__file__))
         self.mapping = loadJsonFile("%s/mapping/%s.json" % (self.path,self.file)).result
@@ -221,7 +221,7 @@ class cilaWsClient(object):
         # Recupero informazioni sugli esecutori se necessario
         #
         ######################################################################################################
-        if doc.getItem('lavori_economia_opt','economia'):
+        if doc.getItem('lavori_economia_opt','economia') == 'economia':
             pass
         else:
             soggetto = obj.client.factory.create('soggetto')

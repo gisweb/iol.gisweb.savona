@@ -379,6 +379,8 @@
             "firma_digitale_ci",
             "firma_digitale_procura"
         ],
-      "532":["documenti_autorizzazione"]
+      "532":["comunicazione_digitale"],
+      "534":["asseverata_digitale"],
+      "535":["allegati_altra_doc"]
     }
 }
