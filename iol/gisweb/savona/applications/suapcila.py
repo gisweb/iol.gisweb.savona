@@ -93,8 +93,12 @@ class suapcilaWsClient(object):
     def getProcedimento(self, obj):
         doc = obj.document
         idoc = IolDocument(doc)
+        tipo = doc.getItem('atti_assenso_tipo', [])
         pr = obj.client.factory.create('procedimento')
-        pr.tipo = 21350
+        if 'atti_acquisiti' in tipo:
+            pr.tipo = 21410
+        else:
+            pr.tipo = 21400
         pr.oggetto = doc.getItem('descrizione_intervento','')
         pr.note = '\n'.join(idoc.getLabels('tipologia_intervento'))
         pr.protocollo = doc.getItem('numero_protocollo','')
