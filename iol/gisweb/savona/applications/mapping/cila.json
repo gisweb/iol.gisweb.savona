@@ -447,9 +447,11 @@
             "allegato_documento_titolare",
             "allegato_documento_compropr"
         ],
-      "532":["comunicazione_digitale"],
-      "533":["allegato_versam_oblazione"],
-      "534":["asseverata_digitale"],
-      "535":["allegati_altra_doc"]
+        "532":["comunicazione_digitale"],
+        "533":["allegato_versam_oblazione"],
+        "534":["asseverata_digitale"],
+        "535":["allegati_altra_doc"],
+        "536":["allegato_documentazione_altro"],
+        "537":["allegato_copia_notifica_preliminare"]
     }
 }

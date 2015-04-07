@@ -331,7 +331,7 @@
             "allegati_rel_idraulica"
         ],
         "522": [
-            "allegati_computo_superf","allegato_ricevuta_versamento"
+            "allegati_computo_superf","allegato_calcolo_preventivo","allegato_ricevuta_versamento"
         ],
         "523": [
             "allegati_computo_parcheggi"
@@ -379,8 +379,8 @@
             "firma_digitale_ci",
             "firma_digitale_procura"
         ],
-      "532":["comunicazione_digitale"],
-      "534":["asseverata_digitale"],
-      "535":["allegati_altra_doc"]
+        "532":["comunicazione_digitale"],
+        "534":["asseverata_digitale"],
+        "535":["allegati_altra_doc"]
     }
 }

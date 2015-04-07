@@ -8,10 +8,13 @@ PROFILE_ID = 'iol.gisweb.savona.replication:default'
 logger = logging.getLogger('iol.gisweb.savona')
 
 def initPackage(context):
-    catalog = api.portal.get_tool('portal_catalog')
-    brains = catalog(portal_type='PlominoDatabase')
-    for brain in brains:
-        db = brain.getObject()
-        for doc in db.getAllDocuments():
-            if not IIolApp.providedBy(doc):
-                mark(doc,IIolApp)
+    try:
+        catalog = api.portal.get_tool('portal_catalog')
+        brains = catalog(portal_type='PlominoDatabase')
+        for brain in brains:
+            db = brain.getObject()
+            for doc in db.getAllDocuments():
+                if not IIolApp.providedBy(doc):
+                    mark(doc,IIolApp)
+    except:
+        pass
