@@ -94,6 +94,7 @@ class cilaWsClient(object):
     def getProcedimento(self, obj):
         doc = obj.document
         idoc = IolDocument(doc)
+        tipo = doc.getItem('atti_assenso_tipo', [])
         pr = obj.client.factory.create('procedimento')
         if 'atti_acquisiti' in tipo:
             pr.tipo = 21310
