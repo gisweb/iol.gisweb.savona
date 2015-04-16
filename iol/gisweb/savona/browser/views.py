@@ -63,6 +63,7 @@ class inviaPW(object):
         else:
             res = wsDoc.aggiungi_pratica()
             res = dict(res)
+            import pdb;pdb.set_trace()
             if res["success"]:
                 doc.setItem("numero_pratica",res["numero_pratica"])
                 wftool = getToolByName(doc, 'portal_workflow')
